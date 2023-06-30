@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { apis } from "./apis";
 import { Authorization } from "./components/Authorization";
 import ApiScrollview from "./components/ApiScrollview";
+import ConfusionButton from "./components/ConfusionButton";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -192,23 +193,24 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Hello{user ? ` ${user.first_name} ${user.last_name}` : " Zoom Apps user"}!</h1>
-      <p>{`User Context Status: ${userContextStatus}`}</p>
+      <ConfusionButton/>
+      {/* <h1>Hello{user ? ` ${user.first_name} ${user.last_name}` : " Zoom Apps user"}!</h1> */}
+      {/* <p>{`User Context Status: ${userContextStatus}`}</p>
       <p>
         {runningContext ?
           `Running Context: ${runningContext}` :
           "Configuring Zoom JavaScript SDK..."
         }
-      </p>
+      </p> */}
 
-      <ApiScrollview />
-      <Authorization
+      {/* <ApiScrollview /> */}
+      {/* <Authorization
         handleError={setError}
         handleUserContextStatus={setUserContextStatus}
         handleUser={setUser}
         user={user}
         userContextStatus={userContextStatus}
-      />
+      /> */}
 
     </div>
   );
