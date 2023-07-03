@@ -1,3 +1,22 @@
+const invokeConfusionPress = () => () => {
+
+sequelize.sync().then(() => {
+    console.log('Button_press table created successfully!');
+    Button_Press.create({
+      user: "FAKE USER",
+      time: "2021-12-12"
+    }).then(res => {
+      console.log(res)
+    }).catch((error) => {
+      console.error('Failed to create a new record : ', error);
+    })
+ }).catch((error) => {
+    console.error('Unable to create table : ', error);
+ });
+
+  // console.log("Confusion button pressed");
+}
+
 /* globals zoomSdk */
 
 const invokeZoomAppsSdk = api => () => {
@@ -135,4 +154,4 @@ const apis = [
   },
 ].sort(sortListByName);
 
-module.exports = { apis, invokeZoomAppsSdk }
+module.exports = { apis, invokeZoomAppsSdk, invokeConfusionPress}
