@@ -15,13 +15,6 @@ const thirdPartyOAuthRouter = require('./api/thirdpartyauth/router')
 // Create app
 const app = express()
 
-// Create connection to db
-db.sequelize.sync().then(() => {
-  console.log("Sync'd successfully.");
-}).catch((error) => {
-  console.error("Unable to sync : ", error);
-});
-
 // Set view engine (for system browser error pages)
 app.set('view engine', 'pug')
 
@@ -74,3 +67,10 @@ app.use((error, req, res) => {
 http.createServer(app).listen(process.env.PORT, () => {
   console.log('Zoom App is listening on port', process.env.PORT)
 })
+
+// Create connection to db
+db.sequelize.sync().then(() => {
+  console.log("Sync'd successfully.");
+}).catch((error) => {
+  console.error("Unable to sync : ", error);
+});
