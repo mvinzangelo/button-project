@@ -1,20 +1,19 @@
+const ButtonPressDataService = require("./services/button-press.service");
+
 const invokeConfusionPress = () => () => {
-
-sequelize.sync().then(() => {
-    console.log('Button_press table created successfully!');
-    Button_Press.create({
-      user: "FAKE USER",
-      time: "2021-12-12"
-    }).then(res => {
-      console.log(res)
-    }).catch((error) => {
-      console.error('Failed to create a new record : ', error);
+  console.log("Confusion button pressed");
+  var data = {
+    user: "Test User",
+    time: "2044-03-03"
+  };
+  console.log(data);
+  ButtonPressDataService.create(data)
+    .then(response => {
+      console.log(response.data);
     })
- }).catch((error) => {
-    console.error('Unable to create table : ', error);
- });
-
-  // console.log("Confusion button pressed");
+    .catch(e =>{
+      console.log(e);
+    });
 }
 
 /* globals zoomSdk */

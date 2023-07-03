@@ -1,14 +1,14 @@
 module.exports = (sequelize, Sequelize) => {
-  const Button_Press = sequelize.define("button_presses", {
+  const Button_Press = sequelize.define("button_press", {
       user: {
-          type: DataTypes.STRING,
+          type: Sequelize.STRING,
           allowNull: false
       },
       time: {
-          type: DataTypes.DATEONLY,
+          type: Sequelize.DATEONLY,
           allowNull: false
       }
-  })
+  });
 
   return Button_Press;
 };

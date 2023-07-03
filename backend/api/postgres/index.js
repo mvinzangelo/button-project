@@ -61,4 +61,6 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
+db.button_presses = require("./models/button-press-model")(sequelize, Sequelize);
+
 module.exports = db;
