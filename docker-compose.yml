@@ -28,6 +28,7 @@ services:
       - /home/node/app/node_modules
     depends_on:
       - redis
+      - postgres
 
   frontend:
     build: ./frontend/.
@@ -58,8 +59,8 @@ services:
       image: postgres:10.5
       restart: always
       environment:
-        - POSTGRES_USER=postgres
-        - POSTGRES_PASSWORD=postgres
+        - POSTGRES_USER=${POSTGRES_USER}
+        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       logging:
         options:
           max-size: 10m

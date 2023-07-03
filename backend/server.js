@@ -5,6 +5,26 @@ require('./config')
 const http = require('http')
 const express = require('express')
 const morgan = require('morgan')
+const Sequelize = require("sequelize");
+
+const user = process.env.POSTGRES_USER;
+const host = process.env.POSTGRES_HOST;
+const database = process.env.POSTGRES_DATABASE;
+const password = process.env.POSTGRES_PASSWORD;
+const port = process.env.POSTGRES_PORT;
+
+const sequelize = new Sequelize(database, user, password, {
+  host,
+  port,
+  dialect: 'postgres',
+  logging: false
+})
+
+sequelize.authenticate().then(() => {
+  console.log('Connection has been established successfully.')
+}).catch((error) => {
+  console.error('Unable to connect to the database: ', error);
+});
 
 const middleware = require('./middleware')
 
