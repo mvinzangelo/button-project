@@ -2,7 +2,7 @@
 
 require('./config')
 
-const db = require("./models")
+const db = require("./api/postgres")
 const http = require('http')
 const express = require('express')
 const morgan = require('morgan')
