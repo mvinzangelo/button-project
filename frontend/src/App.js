@@ -204,13 +204,13 @@ function App() {
       </p> */}
 
       {/* <ApiScrollview /> */}
-      {/* <Authorization
+      <Authorization
         handleError={setError}
         handleUserContextStatus={setUserContextStatus}
         handleUser={setUser}
         user={user}
         userContextStatus={userContextStatus}
-      /> */}
+      />
 
     </div>
   );
