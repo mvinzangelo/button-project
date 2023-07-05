@@ -193,7 +193,7 @@ function App() {
 
   return (
     <div className="App">
-      <ConfusionButton user={user}/>
+      <ConfusionButton user={user} />
       {/* <h1>Hello{user ? ` ${user.first_name} ${user.last_name}` : " Zoom Apps user"}!</h1> */}
       {/* <p>{`User Context Status: ${userContextStatus}`}</p>
       <p>
