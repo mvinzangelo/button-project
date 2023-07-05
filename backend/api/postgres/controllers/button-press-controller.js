@@ -4,6 +4,20 @@ const Lecture = db.lectures;
 const Op = db.Sequelize.Op;
 
 module.exports = {
+  createButtonPress: function (lectureId, buttonPress) {
+    return Button_Press.create({
+      student: buttonPress.student,
+      lectureId: lectureId,
+    })
+      .then((data) => {
+        console.log(data);
+        return data;
+      })
+      .catch((err) => {
+        console.log("Error while creating button-press: ", err);
+      });
+  },
+
   create: function (req, res) {
     console.log("======Button press recorded======");
     // Validate request
