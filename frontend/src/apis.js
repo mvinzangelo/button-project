@@ -1,21 +1,3 @@
-const ButtonPressDataService = require("./services/button-press.service");
-
-const invokeConfusionPress = () => () => {
-  console.log("Confusion button pressed");
-  var data = {
-    user: "Test User",
-    time: "2044-03-03"
-  };
-  console.log(data);
-  ButtonPressDataService.create(data)
-    .then(response => {
-      console.log(response.data);
-    })
-    .catch(e =>{
-      console.log(e);
-    });
-}
-
 /* globals zoomSdk */
 
 const invokeZoomAppsSdk = api => () => {

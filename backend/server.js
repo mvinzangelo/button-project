@@ -2,7 +2,7 @@
 
 require('./config')
 
-const db = require("./api/postgres")
+const db = require("./api/postgres/models")
 const http = require('http')
 const express = require('express')
 const morgan = require('morgan')
@@ -12,6 +12,7 @@ const middleware = require('./middleware')
 const zoomAppRouter = require('./api/zoomapp/router')
 const zoomRouter = require('./api/zoom/router')
 const thirdPartyOAuthRouter = require('./api/thirdpartyauth/router')
+const postgresRouter = require('./api/postgres/router')
 // Create app
 const app = express()
 
@@ -41,6 +42,8 @@ if (
 }
 
 app.use('/zoom', zoomRouter)
+
+app.use('/api/postgres', postgresRouter)
 
 app.get('/hello', (req, res) => {
   res.send('THEK1NG0FGAM3S')
