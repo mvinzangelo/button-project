@@ -18,8 +18,9 @@ module.exports = {
     },
     findAll: function () {
         return Lecture.findAll({
-            include: ["button-presses"],
+            include: [{ model: db.button_presses, as: "button_presses" }],
         }).then((data) => {
+            console.log("All lectures", JSON.stringify(data, null, 2));
             return data;
         })
     }
