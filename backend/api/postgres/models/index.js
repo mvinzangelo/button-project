@@ -24,6 +24,13 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
+db.lectures = require("./lecture-model")(sequelize, Sequelize);
 db.button_presses = require("./button-press-model")(sequelize, Sequelize);
+
+db.lectures.hasMany(db.button_presses, {as: "button_presses"});
+db.button_presses.belongsTo(db.lectures, {
+  foreignKey: "lectureId",
+  as: "lecture",
+});
 
 module.exports = db;
