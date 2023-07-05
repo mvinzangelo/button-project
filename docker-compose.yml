@@ -28,6 +28,7 @@ services:
       - /home/node/app/node_modules
     depends_on:
       - redis
+      - postgres
 
   frontend:
     build: ./frontend/.
@@ -53,3 +54,20 @@ services:
       - "127.0.0.1:6379:6379"
     volumes:
       - ./data:/data
+
+  postgres:
+      image: postgres:10.5
+      restart: always
+      environment:
+        - POSTGRES_USER=${POSTGRES_USER}
+        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      logging:
+        options:
+          max-size: 10m
+          max-file: "3"
+      ports:
+        - '5438:5432'
+      volumes: 
+        - ./postgres-data:/var/lib/postgresql/data
+        # copy the sql script to create tables
+        - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
