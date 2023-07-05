@@ -135,4 +135,4 @@ const apis = [
   },
 ].sort(sortListByName);
 
-module.exports = { apis, invokeZoomAppsSdk, invokeConfusionPress}
+module.exports = { apis, invokeZoomAppsSdk}

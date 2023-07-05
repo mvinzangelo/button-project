@@ -1,6 +1,5 @@
 import { React, useState } from 'react';
 import Button from "react-bootstrap/Button";
-import { invokeConfusionPress } from "../apis";
 import "./ConfusionButton.css";
 
 function ConfusionButton() {
@@ -23,9 +22,6 @@ function ConfusionButton() {
         });
     };
     return (
-        // <div className="confusion-button">
-        //     <Button onClick={invokeConfusionPress()}>Press me if you're confused</Button>
-        // </div>
         <div className="confusion-button">
             <Button onClick={confusionButtonPress}>Press me if you're confused</Button>
         </div>
