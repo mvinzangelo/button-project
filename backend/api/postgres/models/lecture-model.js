@@ -6,5 +6,5 @@ module.exports = (sequelize, Sequelize) => {
       }
   });
 
-  return Button_Press;
+  return Lecture;
 };
