@@ -11,7 +11,7 @@ export const ConfusionButton = (props) => {
     const confusionButtonPress = async () => {
         console.log("=========Confusion button pressed=========");
         var data = {
-          "user": user.first_name,
+          "student": user.first_name,
         }
         fetch('/api/postgres/onbuttonpress', {
             method: "POST",

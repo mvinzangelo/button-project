@@ -32,7 +32,7 @@ const Op = db.Sequelize.Op;
 exports.create = (req, res) => {
   console.log("======Button press recorded======");
     // Validate request
-    if (!req.body.user) {
+    if (!req.body.student) {
       res.status(400).send({
         message: "Content can not be empty!"
       });
@@ -40,8 +40,7 @@ exports.create = (req, res) => {
     }
     // Create a Tutorial
     const press_data = {
-      user: req.body.user,
-      time: req.body.time
+      student: req.body.student,
     };
     // Save Tutorial in the database
     Button_Press.create(press_data)

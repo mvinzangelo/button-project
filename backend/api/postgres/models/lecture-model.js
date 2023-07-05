@@ -1,6 +1,6 @@
 module.exports = (sequelize, Sequelize) => {
-  const Button_Press = sequelize.define("button_press", {
-      student: {
+  const Lecture = sequelize.define("lecture", {
+      instructor: {
           type: Sequelize.STRING,
           allowNull: false
       }
