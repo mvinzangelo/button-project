@@ -15,5 +15,12 @@ module.exports = {
             .catch((err) => {
                 console.log("Error while creating lecture: ", err);
             });
+    },
+    findAll: function () {
+        return Lecture.findAll({
+            include: ["button-presses"],
+        }).then((data) => {
+            return data;
+        })
     }
 };
