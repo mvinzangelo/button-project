@@ -3,10 +3,6 @@ module.exports = (sequelize, Sequelize) => {
       user: {
           type: Sequelize.STRING,
           allowNull: false
-      },
-      time: {
-          type: Sequelize.DATEONLY,
-          allowNull: false
       }
   });
 

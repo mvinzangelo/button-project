@@ -72,7 +72,8 @@ http.createServer(app).listen(process.env.PORT, () => {
 })
 
 // Create connection to db
-db.sequelize.sync().then(() => {
+// ! {force: true} for development purposes only
+db.sequelize.sync({force: true}).then(() => {
   console.log("Sync'd successfully.");
 }).catch((error) => {
   console.error("Unable to sync : ", error);
