@@ -11,7 +11,9 @@ export const ConfusionButton = (props) => {
     const confusionButtonPress = async () => {
         console.log("=========Confusion button pressed=========");
         var data = {
-          "student": user.first_name,
+            "student": user.first_name,
+            // ! should be refactored to be stored in the backend
+            "lectureId": 1
         }
         fetch('/api/postgres/onbuttonpress', {
             method: "POST",
@@ -19,7 +21,7 @@ export const ConfusionButton = (props) => {
             headers: {
                 "Content-Type": "application/json",
             },
-        }).then(() =>{
+        }).then(() => {
             console.log("Button press updated correctly.")
         }).catch(e => {
             console.error(e);
