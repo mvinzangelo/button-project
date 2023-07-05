@@ -27,9 +27,28 @@ export const ConfusionButton = (props) => {
             console.error(e);
         });
     };
+
+    const createNewLecturePress = async () => {
+        console.log("=========Create new lecture button pressed=========");
+        var data = {
+            "instructor": user.first_name,
+        }
+        fetch('/api/postgres/oncreatenewlecture', {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }).then(() => {
+            console.log("Button press updated correctly.")
+        }).catch(e => {
+            console.error(e);
+        });
+    }
     return (
         <div className="confusion-button">
             <Button onClick={confusionButtonPress}>Press me if you're confused</Button>
+            <Button onClick={createNewLecturePress}>Create a new lecture</Button>
         </div>
     )
 }
