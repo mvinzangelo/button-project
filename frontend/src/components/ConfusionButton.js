@@ -13,7 +13,7 @@ export const ConfusionButton = (props) => {
         var data = {
             "student": user.first_name,
             // ! should be refactored to be stored in the backend
-            "lectureId": 1
+            "lectureId": "1"
         }
         fetch('/api/postgres/onbuttonpress', {
             method: "POST",

@@ -30,6 +30,7 @@ module.exports = {
     // Create a Tutorial
     const press_data = {
       student: req.body.student,
+      lectureId: req.body.lectureId,
     };
     // Save Tutorial in the database
     Button_Press.create(press_data)
