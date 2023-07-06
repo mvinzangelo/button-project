@@ -4,10 +4,10 @@ const Lecture = db.lectures;
 const Op = db.Sequelize.Op;
 
 module.exports = {
-  createButtonPress: function (lectureId, buttonPress) {
+  createButtonPress: function (data) {
     return Button_Press.create({
-      student: buttonPress.student,
-      lectureId: lectureId,
+      student: data.student,
+      lectureId: data.lectureId,
     })
       .then((data) => {
         console.log(data);
@@ -15,6 +15,7 @@ module.exports = {
       })
       .catch((err) => {
         console.log("Error while creating button-press: ", err);
+        return err;
       });
   },
 

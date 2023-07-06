@@ -34,17 +34,19 @@ export const ConfusionButton = (props) => {
             // ! should be refactored to be stored in the backend
             "lectureId": lectureCode
         }
-        fetch('/api/postgres/onbuttonpress', {
-            method: "POST",
-            body: JSON.stringify(data),
-            headers: {
-                "Content-Type": "application/json",
-            },
-        }).then(() => {
-            console.log("Button press updated correctly.")
-        }).catch(e => {
-            console.error(e);
-        });
+        socket.emit('button_press', data);
+        // * old http method
+        // fetch('/api/postgres/onbuttonpress', {
+        //     method: "POST",
+        //     body: JSON.stringify(data),
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //     },
+        // }).then(() => {
+        //     console.log("Button press updated correctly.")
+        // }).catch(e => {
+        //     console.error(e);
+        // });
     };
 
     const createNewLecturePress = async () => {
