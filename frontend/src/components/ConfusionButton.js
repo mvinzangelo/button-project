@@ -66,6 +66,9 @@ export const ConfusionButton = (props) => {
                     />
                 </Form.Group>
             </Form>
+            <div>
+                <Button>Join lecture</Button>
+            </div>
         </div>
     )
 }
