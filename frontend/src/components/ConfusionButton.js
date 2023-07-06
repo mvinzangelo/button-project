@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 import io from 'socket.io-client'
 import "./ConfusionButton.css";
 
-const socket = io.connect('http://localhost:3000');
+const socket = io.connect();
 
 export const ConfusionButton = (props) => {
 
@@ -74,10 +74,7 @@ export const ConfusionButton = (props) => {
                         onChange={(e) => { setLectureCode(e.target.value) }}
                         type="text"
                     />
-                    <Button onClick={() => {
-                        const history = useHistory();
-                        history.push("/button");
-                    }}>Join lecture</Button>
+                    <Button>Join lecture</Button>
                 </Form.Group>
             </Form>
             <div>
