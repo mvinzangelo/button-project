@@ -10,10 +10,11 @@ module.exports = {
         })
             .then((data) => {
                 console.log(data);
-                return data
+                return data;
             })
             .catch((err) => {
                 console.log("Error while creating lecture: ", err);
+                return err;
             });
     },
     create: function (req, res) {

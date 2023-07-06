@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import { React, useInsertionEffect, useState, useEffect, useReducer } from 'react';
 import { Route, Redirect, useHistory } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Form from 'react-bootstrap/Form';
@@ -15,17 +15,31 @@ export const ProfessorView = (props) => {
 
     const [lectureCode, setLectureCode] = useState('');
 
-    const createNewLecturePress = async () => {
+    useEffect(() => {
+        socket.on('return_lecture_id', (res) => {
+            console.log("RESPONSE: ", res);
+            setLectureCode(res);
+        });
+    });
+
+    const createNewLecturePress = () => {
         console.log("=========Create new lecture button pressed=========");
         var data = {
             "instructor": user.first_name,
         }
         socket.emit('create_new_lecture', data);
     }
+    const endCurrentLecturePress = async () => {
+
+    }
     return (
         <div className="professor-view-container">
+            <h1>Current lecture code: {lectureCode ? lectureCode : "n/a"}</h1>
             <div>
-                <Button onClick={createNewLecturePress}>Create a new lecture</Button>
+                <Button onClick={createNewLecturePress}>Start a new lecture</Button>
+            </div>
+            <div>
+                <Button onClick={endCurrentLecturePress}>End current lecture</Button>
             </div>
         </div>
     )
