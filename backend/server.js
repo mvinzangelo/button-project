@@ -82,6 +82,18 @@ const io = new Server(server);
 
 io.on('connection', (socket) => {
   console.log(`SOCKET: user connected ${socket.id}`);
+  // event listeners
+  socket.on('join_lecture', (data) => {
+    const { name, code } = data;
+    console.log(`${name} has joined lecture ${code}`);
+    socket.join(code);
+
+    let __createdtime__ = Date.now();
+    socket.to(code).emit('recieve_message', {
+      message: `${name} has joined the chat room`,
+      __createdtime__
+    })
+  });
 })
 
 // Create connection to db
