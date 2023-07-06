@@ -6,7 +6,7 @@ const db = require("./api/postgres/models")
 const http = require('http')
 const express = require('express')
 const morgan = require('morgan')
-const io = require("socket.io");
+const { Server } = require("socket.io");
 
 const middleware = require('./middleware')
 
@@ -70,7 +70,7 @@ app.use((error, req, res) => {
 })
 
 // Start express server
-http.createServer(app).listen(process.env.PORT, () => {
+const server = http.createServer(app).listen(process.env.PORT, () => {
   console.log('Zoom App is listening on port', process.env.PORT)
 })
 
@@ -102,3 +102,10 @@ db.sequelize.sync({ force: true }).then(async () => {
 }).catch((error) => {
   console.error("Unable to sync : ", error);
 });
+
+// initialize socket.io
+const io = new Server(server);
+
+io.on('connection', (socket) => {
+  console.log("user connected");
+})
