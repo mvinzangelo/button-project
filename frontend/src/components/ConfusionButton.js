@@ -17,11 +17,14 @@ export const ConfusionButton = (props) => {
 
     const joinLecture = () => {
         if (lectureCode !== '' && user.first_name !== '') {
-            socket.emit('join_room', { lectureCode });
+            let name = user.first_name;
+            let code = lectureCode;
+            socket.emit('join_lecture', { name, code });
         }
     }
 
     const joinLectureButtonPress = () => {
+        joinLecture();
     }
 
     const confusionButtonPress = async () => {
@@ -74,7 +77,7 @@ export const ConfusionButton = (props) => {
                         onChange={(e) => { setLectureCode(e.target.value) }}
                         type="text"
                     />
-                    <Button>Join lecture</Button>
+                    <Button onClick={joinLectureButtonPress}>Join lecture</Button>
                 </Form.Group>
             </Form>
             <div>
