@@ -80,6 +80,9 @@ const server = http.createServer(app).listen(process.env.PORT, () => {
 // initialize socket.io
 const io = new Server(server);
 
+let currentLecture = '';
+let allStudents = [];
+
 io.on('connection', (socket) => {
   console.log(`SOCKET: user connected ${socket.id}`);
   // event listeners
@@ -93,8 +96,13 @@ io.on('connection', (socket) => {
       message: `${name} has joined the chat room`,
       __createdtime__
     })
+    currentLecture = code;
+    allStudents.push({ id: socket.id, name, code });
+    let lectureUsers = allStudents.filter((user) => user.room === code);
+    socket.to(code).emit('lecture_users', lectureUsers);
+    socket.emit('lecture_users', lectureUsers);
   });
-})
+});
 
 // Create connection to db
 // ! {force: true} for development purposes only
