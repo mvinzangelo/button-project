@@ -87,6 +87,7 @@ let currentLecture = '';
 let allStudents = [];
 
 const studentHandlers = require("./api/postgres/handers/studentHander");
+const professorHanders = require("./api/postgres/handers/professorHandler");
 
 io.on('connection', (socket) => {
   console.log(`SOCKET RESPONSE: user connected ${socket.id}`);
@@ -110,6 +111,7 @@ io.on('connection', (socket) => {
 
   // register handers
   studentHandlers(io, socket);
+  professorHanders(io, socket);
 });
 
 // Create connection to db
