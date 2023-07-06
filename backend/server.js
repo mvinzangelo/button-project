@@ -6,9 +6,11 @@ const db = require("./api/postgres/models")
 const http = require('http')
 const express = require('express')
 const morgan = require('morgan')
+const io = require("socket.io");
 
 const middleware = require('./middleware')
 
+// routers
 const zoomAppRouter = require('./api/zoomapp/router')
 const zoomRouter = require('./api/zoom/router')
 const thirdPartyOAuthRouter = require('./api/thirdpartyauth/router')
