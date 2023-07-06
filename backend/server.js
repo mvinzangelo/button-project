@@ -83,8 +83,10 @@ const io = new Server(server);
 let currentLecture = '';
 let allStudents = [];
 
+const button_press_controller = require('./api/postgres/controllers/button-press-controller')
+
 io.on('connection', (socket) => {
-  console.log(`SOCKET: user connected ${socket.id}`);
+  console.log(`SOCKET RESPONSE: user connected ${socket.id}`);
   // event listeners
   socket.on('join_lecture', (data) => {
     const { name, code } = data;
@@ -102,6 +104,10 @@ io.on('connection', (socket) => {
     socket.to(code).emit('lecture_users', lectureUsers);
     socket.emit('lecture_users', lectureUsers);
   });
+  socket.on('button_press', async (data) => {
+    console.log("SOCKET RESPONSE: ", data);
+    button_press_controller.createButtonPress(data);
+  })
 });
 
 // Create connection to db
