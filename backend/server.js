@@ -43,6 +43,7 @@ if (
 
 app.use('/zoom', zoomRouter)
 
+// Postgres route
 app.use('/api/postgres', postgresRouter)
 
 app.get('/hello', (req, res) => {
