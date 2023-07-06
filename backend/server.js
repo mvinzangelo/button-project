@@ -6,13 +6,17 @@ const db = require("./api/postgres/models")
 const http = require('http')
 const express = require('express')
 const morgan = require('morgan')
+const cors = require('cors');
+const { Server } = require("socket.io");
 
 const middleware = require('./middleware')
 
+// routers
 const zoomAppRouter = require('./api/zoomapp/router')
 const zoomRouter = require('./api/zoom/router')
 const thirdPartyOAuthRouter = require('./api/thirdpartyauth/router')
 const postgresRouter = require('./api/postgres/router')
+const { env } = require('process')
 // Create app
 const app = express()
 
@@ -28,6 +32,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(middleware.session)
 app.use(middleware.setResponseHeaders)
+app.use(cors());
 
 // Zoom App routes
 app.use('/api/zoomapp', zoomAppRouter)
@@ -68,33 +73,66 @@ app.use((error, req, res) => {
 })
 
 // Start express server
-http.createServer(app).listen(process.env.PORT, () => {
+const server = http.createServer(app).listen(process.env.PORT, () => {
   console.log('Zoom App is listening on port', process.env.PORT)
-})
+});
+
+// initialize socket.io
+const io = new Server(server);
+
+let currentLecture = '';
+let allStudents = [];
+
+const button_press_controller = require('./api/postgres/controllers/button-press-controller')
+
+io.on('connection', (socket) => {
+  console.log(`SOCKET RESPONSE: user connected ${socket.id}`);
+  // event listeners
+  socket.on('join_lecture', (data) => {
+    const { name, code } = data;
+    console.log(`${name} has joined lecture ${code}`);
+    socket.join(code);
+
+    let __createdtime__ = Date.now();
+    socket.to(code).emit('recieve_message', {
+      message: `${name} has joined the chat room`,
+      __createdtime__
+    })
+    currentLecture = code;
+    allStudents.push({ id: socket.id, name, code });
+    let lectureUsers = allStudents.filter((user) => user.room === code);
+    socket.to(code).emit('lecture_users', lectureUsers);
+    socket.emit('lecture_users', lectureUsers);
+  });
+  socket.on('button_press', async (data) => {
+    console.log("SOCKET RESPONSE: ", data);
+    button_press_controller.createButtonPress(data);
+  })
+});
 
 // Create connection to db
 // ! {force: true} for development purposes only
 db.sequelize.sync({ force: true }).then(async () => {
   // ! test functions
-  const lecture_controller = require('./api/postgres/controllers/lecture-controller');
-  const button_press_controller = require('./api/postgres/controllers/button-press-controller');
+  // const lecture_controller = require('./api/postgres/controllers/lecture-controller');
+  // const button_press_controller = require('./api/postgres/controllers/button-press-controller');
 
-  const lect1 = await lecture_controller.createLecture({
-    instructor: "Test Instructor 1",
-  });
-  const lect2 = await lecture_controller.createLecture({
-    instructor: "Test Instructor 2",
-  });
-  const button_press1 = await button_press_controller.createButtonPress(lect1.id, {
-    student: "Test Student 1",
-  });
-  const button_press3 = await button_press_controller.createButtonPress(lect1.id, {
-    student: "Test Student 3",
-  });
-  const button_press2 = await button_press_controller.createButtonPress(lect2.id, {
-    student: "Test Student 2",
-  });
-  const all = await lecture_controller.findAll();
+  // const lect1 = await lecture_controller.createLecture({
+  //   instructor: "Test Instructor 1",
+  // });
+  // const lect2 = await lecture_controller.createLecture({
+  //   instructor: "Test Instructor 2",
+  // });
+  // const button_press1 = await button_press_controller.createButtonPress(lect1.id, {
+  //   student: "Test Student 1",
+  // });
+  // const button_press3 = await button_press_controller.createButtonPress(lect1.id, {
+  //   student: "Test Student 3",
+  // });
+  // const button_press2 = await button_press_controller.createButtonPress(lect2.id, {
+  //   student: "Test Student 2",
+  // });
+  // const all = await lecture_controller.findAll();
   // ! test functions
   console.log("Sync'd successfully.");
 }).catch((error) => {
