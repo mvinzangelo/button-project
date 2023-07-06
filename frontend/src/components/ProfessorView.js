@@ -20,20 +20,10 @@ export const ProfessorView = (props) => {
         var data = {
             "instructor": user.first_name,
         }
-        fetch('/api/postgres/oncreatenewlecture', {
-            method: "POST",
-            body: JSON.stringify(data),
-            headers: {
-                "Content-Type": "application/json",
-            },
-        }).then(() => {
-            console.log("Button press updated correctly.")
-        }).catch(e => {
-            console.error(e);
-        });
+        socket.emit('create_new_lecture', data);
     }
     return (
-        <div className="confusion-button-container">
+        <div className="professor-view-container">
             <div>
                 <Button onClick={createNewLecturePress}>Create a new lecture</Button>
             </div>
