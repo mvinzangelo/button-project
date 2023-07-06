@@ -197,13 +197,13 @@ function App() {
       <ProfessorView user={user} />
       <StudentView user={user} />
       {/* <h1>Hello{user ? ` ${user.first_name} ${user.last_name}` : " Zoom Apps user"}!</h1> */}
-      <p>{`User Context Status: ${userContextStatus}`}</p>
+      {/* <p>{`User Context Status: ${userContextStatus}`}</p>
       <p>
         {runningContext ?
           `Running Context: ${runningContext}` :
           "Configuring Zoom JavaScript SDK..."
         }
-      </p>
+      </p> */}
 
       {/* <ApiScrollview /> */}
       <Authorization
