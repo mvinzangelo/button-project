@@ -10,10 +10,26 @@ module.exports = {
         })
             .then((data) => {
                 console.log(data);
-                return data
+                return data;
             })
             .catch((err) => {
-                console.log("Error while creating lecture: ", err);
+                console.error("Error while creating lecture: ", err);
+                return err;
+            });
+    },
+    setLectureInactive: function (lectureId) {
+        return Lecture.update({
+            isActive: false
+        }, {
+            where: { id: lectureId }
+        })
+            .then((data) => {
+                console.log(data);
+                return data;
+            })
+            .catch((err) => {
+                console.error("Error while updating lecture: ", err);
+                return err;
             });
     },
     create: function (req, res) {
