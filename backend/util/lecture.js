@@ -8,7 +8,17 @@ class Lecture {
     }
 
     addLecture(lecture) {
-        this.lecturesState.push(lecture)
+        this.lecturesState.push({
+            info: lecture,
+            students: []
+        });
+    }
+    joinLecture(lectureCode, student) {
+        for (let i = 0; i < this.lecturesState.length; i++) {
+            if (this.lecturesState[i].info.id === lectureCode) {
+                this.lecturesState[i].students.push(student);
+            }
+        }
     }
 }
 
