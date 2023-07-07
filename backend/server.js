@@ -83,9 +83,6 @@ const server = http.createServer(app).listen(process.env.PORT, () => {
 // initialize socket.io
 const io = new Server(server);
 
-let currentLecture = '';
-let allStudents = [];
-
 const studentHandlers = require("./api/postgres/handers/studentHander");
 const professorHanders = require("./api/postgres/handers/professorHandler");
 
@@ -96,17 +93,7 @@ io.on('connection', (socket) => {
     const { name, code } = data;
     console.log(`${name} has joined lecture ${code}`);
     socket.join(code);
-
-    let __createdtime__ = Date.now();
-    socket.to(code).emit('recieve_message', {
-      message: `${name} has joined the chat room`,
-      __createdtime__
-    })
     currentLecture = code;
-    allStudents.push({ id: socket.id, name, code });
-    let lectureUsers = allStudents.filter((user) => user.room === code);
-    socket.to(code).emit('lecture_users', lectureUsers);
-    socket.emit('lecture_users', lectureUsers);
   });
 
   // register handers
