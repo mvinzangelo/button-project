@@ -8,6 +8,7 @@ module.exports = (io, socket, lectures) => {
     const onJoinLecturePress = (data) => {
         const { name, code } = data;
         console.log(`${name} has joined lecture ${code}`);
+        lectures.joinLecture(code, name);
     }
 
     socket.on("button_press", onConfusionButtonPress);
