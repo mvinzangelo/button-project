@@ -1,7 +1,7 @@
 const lecture_controller = require('../controllers/lecture-controller');
 
 module.exports = (io, socket, lectures) => {
-    const onCreatenewLecture = (data) => {
+    const onCreateNewLecture = (data) => {
         console.log("SOCKET RESPONSE: ", data);
         lecture_controller.createLecture(data).then((ret) => {
             socket.emit('return_lecture_id', ret.dataValues.id);
@@ -10,5 +10,13 @@ module.exports = (io, socket, lectures) => {
         });
     }
 
-    socket.on("create_new_lecture", onCreatenewLecture);
+    const onEndCurrentLecture = (data) => {
+        lecture_controller.setLectureInactive(data).then((ret) => {
+            socket.emit('return_lecture_id', 'n/a');
+            lectures.removeLecture(data);
+        });
+    }
+
+    socket.on("create_new_lecture", onCreateNewLecture);
+    socket.on("end_current_lecture", onEndCurrentLecture);
 }

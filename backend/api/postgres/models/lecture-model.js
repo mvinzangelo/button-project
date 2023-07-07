@@ -10,7 +10,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       allowNull: false
     },
-    isOpen: {
+    isActive: {
       type: Sequelize.BOOLEAN,
       allowNull: false,
       defaultValue: true
