@@ -4,8 +4,9 @@ module.exports = (io, socket, lectures) => {
     const onCreatenewLecture = (data) => {
         console.log("SOCKET RESPONSE: ", data);
         lecture_controller.createLecture(data).then((ret) => {
-            console.log("RETURNED DATA", ret);
             socket.emit('return_lecture_id', ret.dataValues.id);
+            lectures.addLecture(ret.dataValues);
+            console.log("------------ state------------\n", lectures.lecturesState);
         });
     }
 
