@@ -1,5 +1,5 @@
 import { React, useInsertionEffect, useState, useEffect, useReducer } from 'react';
-import { Route, Redirect, useHistory } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import Button from "react-bootstrap/Button";
 import Form from 'react-bootstrap/Form';
 import io from 'socket.io-client'
@@ -34,6 +34,9 @@ export const ProfessorView = (props) => {
     }
     return (
         <div className="professor-view-container">
+            {/* <Route path="" exact>
+                <Redirect to="/startlecture" />
+            </Route> */}
             <h1>Current lecture code: {lectureCode ? lectureCode : "n/a"}</h1>
             <div>
                 <Button onClick={createNewLecturePress}>Start a new lecture</Button>
