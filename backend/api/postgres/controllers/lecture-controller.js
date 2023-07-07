@@ -13,7 +13,7 @@ module.exports = {
                 return data;
             })
             .catch((err) => {
-                console.log("Error while creating lecture: ", err);
+                console.error("Error while creating lecture: ", err);
                 return err;
             });
     },
@@ -28,7 +28,7 @@ module.exports = {
                 return data;
             })
             .catch((err) => {
-                console.log("Error while updating lecture: ", err);
+                console.error("Error while updating lecture: ", err);
                 return err;
             });
     },
