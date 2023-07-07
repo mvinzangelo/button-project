@@ -5,6 +5,11 @@ module.exports = (io, socket) => {
         console.log("SOCKET RESPONSE: ", data);
         button_press_controller.createButtonPress(data);
     }
+    const onJoinLecturePress = (data) => {
+        const { name, code } = data;
+        console.log(`${name} has joined lecture ${code}`);
+    }
 
     socket.on("button_press", onConfusionButtonPress);
+    socket.on("join_lecture", onJoinLecturePress);
 }
