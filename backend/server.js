@@ -8,6 +8,7 @@ const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors');
 const { Server } = require("socket.io");
+const Lecture = require("./util/lecture")
 
 const middleware = require('./middleware')
 
@@ -17,8 +18,6 @@ const zoomRouter = require('./api/zoom/router')
 const thirdPartyOAuthRouter = require('./api/thirdpartyauth/router')
 const postgresRouter = require('./api/postgres/router')
 const { env } = require('process')
-
-// handlers
 
 // Create app
 const app = express()
@@ -82,23 +81,16 @@ const server = http.createServer(app).listen(process.env.PORT, () => {
 
 // initialize socket.io
 const io = new Server(server);
+const lectureStore = new Lecture();
 
 const studentHandlers = require("./api/postgres/handers/studentHander");
 const professorHanders = require("./api/postgres/handers/professorHandler");
 
 io.on('connection', (socket) => {
   console.log(`SOCKET RESPONSE: user connected ${socket.id}`);
-  // event listeners
-  socket.on('join_lecture', (data) => {
-    const { name, code } = data;
-    console.log(`${name} has joined lecture ${code}`);
-    socket.join(code);
-    currentLecture = code;
-  });
-
   // register handers
-  studentHandlers(io, socket);
-  professorHanders(io, socket);
+  studentHandlers(io, socket, lectureStore);
+  professorHanders(io, socket, lectureStore);
 });
 
 // Create connection to db
