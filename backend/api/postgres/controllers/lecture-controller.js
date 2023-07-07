@@ -32,30 +32,6 @@ module.exports = {
                 return err;
             });
     },
-    create: function (req, res) {
-        console.log("======Create new lecture recorded======");
-        if (!req.body.instructor) {
-            res.status(400).send({
-                message: "Content can not be empty!"
-            });
-            return;
-        }
-        // Create a Tutorial
-        const lecture_data = {
-            instructor: req.body.instructor,
-        };
-        Lecture.create(lecture_data)
-            .then(data => {
-                console.log(data);
-                res.send(data);
-            })
-            .catch(err => {
-                res.status(500).send({
-                    message:
-                        err.message || "Some error occurred while creating the Lecture."
-                });
-            });
-    },
     findAll: function () {
         return Lecture.findAll({
             include: [{ model: db.button_presses, as: "button_presses" }],
