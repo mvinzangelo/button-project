@@ -14,6 +14,7 @@ module.exports = (io, socket, lectures) => {
         lecture_controller.setLectureInactive(data).then((ret) => {
             socket.emit('return_lecture_id', 'n/a');
             lectures.removeLecture(data);
+            console.log("------------ state------------\n", lectures.lecturesState);
         });
     }
 
