@@ -17,6 +17,21 @@ module.exports = {
                 return err;
             });
     },
+    setLectureInactive: function (lectureId) {
+        return Lecture.update({
+            isActive: false
+        }, {
+            where: { id: lectureId }
+        })
+            .then((data) => {
+                console.log(data);
+                return data;
+            })
+            .catch((err) => {
+                console.log("Error while updating lecture: ", err);
+                return err;
+            });
+    },
     create: function (req, res) {
         console.log("======Create new lecture recorded======");
         if (!req.body.instructor) {

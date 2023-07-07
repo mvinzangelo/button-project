@@ -20,6 +20,13 @@ class Lecture {
             }
         }
     }
+    removeLecture(lectureCode) {
+        const objWithIdIndex = this.lecturesState.findIndex((obj) => obj.info.id === lectureCode);
+        if (objWithIdIndex > -1) {
+            this.lecturesState.splice(objWithIdIndex, 1);
+        }
+        return this.lecturesState;
+    }
 }
 
 module.exports = Lecture;
