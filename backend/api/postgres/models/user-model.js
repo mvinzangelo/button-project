@@ -17,6 +17,10 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
             allowNull: false
         },
+        email: {
+            type: Sequelize.STRING,
+            allowNull: false
+        },
         inLecture: {
             type: Sequelize.BOOLEAN,
             allowNull: false,

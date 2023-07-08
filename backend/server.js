@@ -83,12 +83,14 @@ const lectureStore = new Lecture();
 
 const studentHandlers = require("./api/postgres/handers/studentHander");
 const professorHanders = require("./api/postgres/handers/professorHandler");
+const userHandlers = require("./api/postgres/handers/userHandler");
 
 io.on('connection', (socket) => {
   console.log(`SOCKET RESPONSE: user connected ${socket.id}`);
   // register handers
   studentHandlers(io, socket, lectureStore);
   professorHanders(io, socket, lectureStore);
+  userHandlers(io, socket, lectureStore);
 });
 
 // Create connection to db
