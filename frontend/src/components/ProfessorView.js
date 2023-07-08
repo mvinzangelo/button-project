@@ -1,7 +1,5 @@
-import { React, useInsertionEffect, useState, useEffect, useReducer } from 'react';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { React, useState, useEffect } from 'react';
 import Button from "react-bootstrap/Button";
-import Form from 'react-bootstrap/Form';
 import io from 'socket.io-client'
 import "./StudentView.css";
 

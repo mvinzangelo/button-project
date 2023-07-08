@@ -1,5 +1,4 @@
-import { React, useState } from 'react';
-import { Route, Redirect, useHistory } from "react-router-dom";
+import { React, useEffect, useState } from 'react';
 import Button from "react-bootstrap/Button";
 import Form from 'react-bootstrap/Form';
 import io from 'socket.io-client'
@@ -17,7 +16,6 @@ export const StudentView = (props) => {
 
     const joinLectureButtonPress = () => {
         if (lectureCode !== '' && user.id !== '') {
-            // TODO: Check if the user is in a lecture on the backend and not the frontend
             let id = user.id;
             let code = lectureCode;
             socket.emit('join_lecture', { id, code });
@@ -25,7 +23,8 @@ export const StudentView = (props) => {
     }
 
     const leaveLectureButtonPress = () => {
-        socket.emit('leave_lecture',)
+        socket.emit('check_if_in_lecture', user.id);
+        socket.emit('leave_lecture');
     }
 
     const confusionButtonPress = async () => {
@@ -35,7 +34,6 @@ export const StudentView = (props) => {
             // ! should be refactored to be stored in the backend
             "lectureId": lectureCode
         }
-        // TODO: Check if the user is a lecture
         socket.emit('button_press', data);
     };
 
