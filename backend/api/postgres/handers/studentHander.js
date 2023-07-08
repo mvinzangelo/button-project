@@ -28,7 +28,7 @@ module.exports = (io, socket, lectures) => {
     }
     const onLeaveLecturePress = async (data) => {
         // console.log(data);
-        const currentUser = await user_controller.getCurrentLecture(data);
+        const currentUser = await user_controller.getUserByPk(data);
         // console.log(currentUser.dataValues.lectureId);
         user_controller.removeLectureId(data);
         console.log(`${data} has left lefture ${currentUser.dataValues.lectureId}`);
