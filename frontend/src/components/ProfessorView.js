@@ -25,7 +25,7 @@ export const ProfessorView = (props) => {
     const createNewLecturePress = () => {
         console.log("=========Create new lecture button pressed=========");
         var data = {
-            "instructor": user.first_name,
+            "professorId": user.id,
         }
         socket.emit('create_new_lecture', data);
     }

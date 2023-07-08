@@ -11,10 +11,10 @@ module.exports = (io, socket, lectures) => {
         }
     }
     const onJoinLecturePress = (data) => {
-        const { name, code } = data;
+        const { id, code } = data;
         if (lectures.isLectureActive(code)) {
-            console.log(`${name} has joined lecture ${code}`);
-            lectures.joinLecture(code, name);
+            console.log(`${id} has joined lecture ${code}`);
+            lectures.joinLecture(code, id);
             socket.join(code);
             console.log(socket.rooms);
         }
