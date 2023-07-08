@@ -20,11 +20,18 @@ export const StudentView = (props) => {
             let code = lectureCode;
             socket.emit('join_lecture', { id, code });
         }
+        else {
+            console.error("No user or not in lecture.");
+        }
     }
 
     const leaveLectureButtonPress = () => {
-        socket.emit('check_if_in_lecture', user.id);
-        socket.emit('leave_lecture');
+        if (user.id !== '') {
+            socket.emit('leave_lecture');
+        }
+        else {
+            console.error("No user.");
+        }
     }
 
     const confusionButtonPress = async () => {
