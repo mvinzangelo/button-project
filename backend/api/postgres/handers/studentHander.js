@@ -37,6 +37,7 @@ module.exports = (io, socket, lectures) => {
     }
     const onLectureEnded = (data) => {
         console.log("left lecture: ", data);
+        user_controller.removeAllStudentsFromLecture(data);
         socket.leave(data)
     }
 

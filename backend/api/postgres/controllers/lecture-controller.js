@@ -22,7 +22,7 @@ module.exports = {
             where: { id: lectureId }
         })
             .then((data) => {
-                console.log(data.toJSON());
+                console.log(data);
                 return data;
             })
             .catch((err) => {
