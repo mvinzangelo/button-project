@@ -63,7 +63,7 @@ module.exports = {
         });
         console.log(users.toJSON());
     },
-    getCurrentLecture: function (user) {
+    getUserByPk: function (user) {
         return User.findByPk(user)
             .then((data) => {
                 console.log(data.toJSON());
