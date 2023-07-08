@@ -26,10 +26,17 @@ db.sequelize = sequelize;
 
 db.lectures = require("./lecture-model")(sequelize, Sequelize);
 db.button_presses = require("./button-press-model")(sequelize, Sequelize);
+db.users = require("./user-model")(sequelize, Sequelize);
 
-// create relationship between lectures and button_presses
+// create one to many relationship between lectures and button_presses
 db.lectures.hasMany(db.button_presses, { as: "button_presses" });
 db.button_presses.belongsTo(db.lectures, {
+  foreignKey: "lectureId",
+  as: "lecture",
+});
+// create one to many relationship between lecutres and users
+db.lectures.hasMany(db.users, { as: "users" });
+db.users.belongsTo(db.lectures, {
   foreignKey: "lectureId",
   as: "lecture",
 });
