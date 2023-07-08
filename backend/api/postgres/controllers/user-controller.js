@@ -32,7 +32,7 @@ module.exports = {
             where: { id: user }
         })
             .then((data) => {
-                console.log(data.toJSON());
+                console.log(data);
                 return data;
             })
             .catch((err) => {
@@ -48,13 +48,20 @@ module.exports = {
             where: { id: user }
         })
             .then((data) => {
-                console.log(data.toJSON());
+                console.log(data);
                 return data;
             })
             .catch((err) => {
                 console.error("Error while updating user: ", err);
                 return err;
             });
+    },
+    removeAllStudentsFromLecture: async function (lectureId) {
+        // TODO: FIXME (NOT FINISHED)
+        const users = User.findAll({
+            lectureId: lectureId
+        });
+        console.log(users.toJSON());
     },
     getCurrentLecture: function (user) {
         return User.findByPk(user)

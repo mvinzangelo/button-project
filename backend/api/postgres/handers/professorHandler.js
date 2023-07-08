@@ -14,8 +14,8 @@ module.exports = (io, socket, lectures) => {
     const onEndCurrentLecture = (data) => {
         lecture_controller.setLectureInactive(data).then((ret) => {
             // TODO: update the database when the lecture ends
-            socket.emit('return_lecture_id', 'n/a');
             socket.to(data).emit("lecture_ended", data);
+            socket.emit('return_lecture_id', 'n/a');
             lectures.removeLecture(data);
             console.log("------------ state------------\n", lectures.lecturesState);
         });
