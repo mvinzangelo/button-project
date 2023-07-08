@@ -37,7 +37,7 @@ export const ProfessorView = (props) => {
             {/* <Route path="" exact>
                 <Redirect to="/startlecture" />
             </Route> */}
-            <h1>Current lecture code: {lectureCode ? lectureCode : "n/a"}</h1>
+            <h2>Current lecture code: {lectureCode ? lectureCode : "n/a"}</h2>
             <div>
                 <Button onClick={createNewLecturePress}>Start a new lecture</Button>
             </div>
