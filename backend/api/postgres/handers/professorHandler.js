@@ -13,6 +13,7 @@ module.exports = (io, socket, lectures) => {
     const onEndCurrentLecture = (data) => {
         lecture_controller.setLectureInactive(data).then((ret) => {
             socket.emit('return_lecture_id', 'n/a');
+            socket.to(data).emit("lecture_ended", data);
             lectures.removeLecture(data);
             console.log("------------ state------------\n", lectures.lecturesState);
         });

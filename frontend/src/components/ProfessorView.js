@@ -29,7 +29,7 @@ export const ProfessorView = (props) => {
         }
         socket.emit('create_new_lecture', data);
     }
-    const endCurrentLecturePress = async () => {
+    const endCurrentLecturePress = () => {
         socket.emit('end_current_lecture', lectureCode);
     }
     return (
