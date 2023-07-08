@@ -26,7 +26,8 @@ module.exports = {
     },
     addLectureId: function (user, lectureId) {
         return User.update({
-            lectureId: lectureId
+            lectureId: lectureId,
+            inLecture: true
         }, {
             where: { id: user }
         })
@@ -36,6 +37,33 @@ module.exports = {
             })
             .catch((err) => {
                 console.error("Error while updating user: ", err);
+                return err;
+            });
+    },
+    removeLectureId: function (user) {
+        return User.update({
+            lectureId: null,
+            inLecture: false
+        }, {
+            where: { id: user }
+        })
+            .then((data) => {
+                console.log(data);
+                return data;
+            })
+            .catch((err) => {
+                console.error("Error while updating user: ", err);
+                return err;
+            });
+    },
+    getCurrentLecture: function (user) {
+        return User.findByPk(user)
+            .then((data) => {
+                console.log(data);
+                return data;
+            })
+            .catch((err) => {
+                console.error("Error finding user by pk: ", err);
                 return err;
             });
     }
