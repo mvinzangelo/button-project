@@ -16,7 +16,6 @@ const middleware = require('./middleware')
 const zoomAppRouter = require('./api/zoomapp/router')
 const zoomRouter = require('./api/zoom/router')
 const thirdPartyOAuthRouter = require('./api/thirdpartyauth/router')
-const postgresRouter = require('./api/postgres/router')
 const { env } = require('process')
 
 // Create app
@@ -51,7 +50,6 @@ if (
 app.use('/zoom', zoomRouter)
 
 // Postgres route
-app.use('/api/postgres', postgresRouter)
 
 app.get('/hello', (req, res) => {
   res.send('THEK1NG0FGAM3S')
