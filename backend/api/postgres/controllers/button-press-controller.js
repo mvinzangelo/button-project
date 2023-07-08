@@ -1,7 +1,5 @@
 const db = require("../models");
 const Button_Press = db.button_presses;
-const Lecture = db.lectures;
-const Op = db.Sequelize.Op;
 
 module.exports = {
   createButtonPress: function (data) {
