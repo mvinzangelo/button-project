@@ -16,20 +16,26 @@ export const StudentView = (props) => {
     const [lectureCode, setLectureCode] = useState('');
 
     const joinLectureButtonPress = () => {
-        if (lectureCode !== '' && user.first_name !== '') {
-            let name = user.first_name;
+        if (lectureCode !== '' && user.id !== '') {
+            // TODO: Check if the user is in a lecture on the backend and not the frontend
+            let id = user.id;
             let code = lectureCode;
-            socket.emit('join_lecture', { name, code });
+            socket.emit('join_lecture', { id, code });
         }
+    }
+
+    const leaveLectureButtonPress = () => {
+        socket.emit('leave_lecture',)
     }
 
     const confusionButtonPress = async () => {
         console.log("=========Confusion button pressed=========");
         var data = {
-            "student": user.first_name,
+            "studentId": user.id,
             // ! should be refactored to be stored in the backend
             "lectureId": lectureCode
         }
+        // TODO: Check if the user is a lecture
         socket.emit('button_press', data);
     };
 
@@ -44,6 +50,7 @@ export const StudentView = (props) => {
                         type="text"
                     />
                     <Button onClick={joinLectureButtonPress}>Join lecture</Button>
+                    <Button onClick={leaveLectureButtonPress}>Leave lecture</Button>
                 </Form.Group>
             </Form>
             <div>

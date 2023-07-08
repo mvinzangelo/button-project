@@ -6,7 +6,7 @@ const Op = db.Sequelize.Op;
 module.exports = {
   createButtonPress: function (data) {
     return Button_Press.create({
-      student: data.student,
+      studentId: data.studentId,
       lectureId: data.lectureId,
     })
       .then((data) => {
@@ -22,7 +22,7 @@ module.exports = {
   create: function (req, res) {
     console.log("======Button press recorded======");
     // Validate request
-    if (!req.body.student) {
+    if (!req.body.studentId) {
       res.status(400).send({
         message: "Content can not be empty!"
       });
@@ -30,7 +30,7 @@ module.exports = {
     }
     // Create a Tutorial
     const press_data = {
-      student: req.body.student,
+      studentId: req.body.studentId,
       lectureId: req.body.lectureId,
     };
     // Save Tutorial in the database
