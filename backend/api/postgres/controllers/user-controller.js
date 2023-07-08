@@ -23,5 +23,20 @@ module.exports = {
                 console.error("Error while creating user: ", err);
                 return err;
             });
+    },
+    addLectureId: function (user, lectureId) {
+        return User.update({
+            lectureId: lectureId
+        }, {
+            where: { id: user }
+        })
+            .then((data) => {
+                console.log(data);
+                return data;
+            })
+            .catch((err) => {
+                console.error("Error while updating user: ", err);
+                return err;
+            });
     }
 }
