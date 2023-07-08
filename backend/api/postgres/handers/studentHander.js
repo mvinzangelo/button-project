@@ -7,10 +7,15 @@ module.exports = (io, socket, lectures) => {
     }
     const onJoinLecturePress = (data) => {
         const { name, code } = data;
-        console.log(`${name} has joined lecture ${code}`);
-        lectures.joinLecture(code, name);
-        socket.join(code);
-        console.log(socket.rooms);
+        if (lectures.isLectureActive(code)) {
+            console.log(`${name} has joined lecture ${code}`);
+            lectures.joinLecture(code, name);
+            socket.join(code);
+            console.log(socket.rooms);
+        }
+        else {
+            console.error("Error joining lecture: not an active lecture.");
+        }
     }
     const onLectureEnded = (data) => {
         console.log("left lecture: ", data);
