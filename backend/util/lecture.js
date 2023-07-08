@@ -27,6 +27,14 @@ class Lecture {
         }
         return this.lecturesState;
     }
+    isLectureActive(lectureCode) {
+        const objWithIdIndex = this.lecturesState.findIndex((obj) => obj.info.id === lectureCode);
+        if (objWithIdIndex > -1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
 module.exports = Lecture;
