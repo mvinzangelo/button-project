@@ -113,6 +113,7 @@ export const Authorization = (props) => {
         if (response.status !== 200) throw new Error();
         const user = await response.json();
         handleUser(user);
+        // TODO: Handle user on the database here
         setShowInClientOAuthPrompt(false);
       } catch (error) {
         console.error(error);
