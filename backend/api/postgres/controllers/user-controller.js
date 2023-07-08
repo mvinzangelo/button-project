@@ -16,7 +16,7 @@ module.exports = {
             email: user.email
         })
             .then((data => {
-                console.log(data);
+                console.log(data.toJSON());
                 return data;
             }))
             .catch((err) => {
@@ -32,7 +32,7 @@ module.exports = {
             where: { id: user }
         })
             .then((data) => {
-                console.log(data);
+                console.log(data.toJSON());
                 return data;
             })
             .catch((err) => {
@@ -48,7 +48,7 @@ module.exports = {
             where: { id: user }
         })
             .then((data) => {
-                console.log(data);
+                console.log(data.toJSON());
                 return data;
             })
             .catch((err) => {
@@ -59,7 +59,7 @@ module.exports = {
     getCurrentLecture: function (user) {
         return User.findByPk(user)
             .then((data) => {
-                console.log(data);
+                console.log(data.toJSON());
                 return data;
             })
             .catch((err) => {
