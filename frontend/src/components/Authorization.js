@@ -7,6 +7,9 @@ import Header from "./Header";
 import IFrame from "./IFrame";
 import Image from "./Image";
 import UserInfo from "./UserInfo";
+import io from 'socket.io-client'
+
+const socket = io.connect();
 
 export const Authorization = (props) => {
   const {
@@ -114,6 +117,8 @@ export const Authorization = (props) => {
         const user = await response.json();
         handleUser(user);
         // TODO: Handle user on the database here
+        console.log(user);
+        socket.emit("create_user", user);
         setShowInClientOAuthPrompt(false);
       } catch (error) {
         console.error(error);
