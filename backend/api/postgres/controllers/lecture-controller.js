@@ -7,7 +7,7 @@ module.exports = {
             professorId: lecture.professorId
         })
             .then((data) => {
-                console.log(data);
+                console.log(data.toJSON());
                 return data;
             })
             .catch((err) => {
@@ -22,7 +22,7 @@ module.exports = {
             where: { id: lectureId }
         })
             .then((data) => {
-                console.log(data);
+                console.log(data.toJSON());
                 return data;
             })
             .catch((err) => {
