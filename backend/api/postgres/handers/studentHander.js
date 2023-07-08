@@ -2,8 +2,13 @@ const button_press_controller = require('../controllers/button-press-controller'
 
 module.exports = (io, socket, lectures) => {
     const onConfusionButtonPress = (data) => {
-        console.log("SOCKET RESPONSE: ", data);
-        button_press_controller.createButtonPress(data);
+        if (lectures.isLectureActive(data.lectureId)) {
+            console.log("SOCKET RESPONSE: ", data);
+            button_press_controller.createButtonPress(data);
+        }
+        else {
+            console.error("Error creating button press: lecutre is not active");
+        }
     }
     const onJoinLecturePress = (data) => {
         const { name, code } = data;
