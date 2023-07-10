@@ -2,6 +2,7 @@ const button_press_controller = require('../controllers/button-press-controller'
 
 module.exports = (io, socket, lectures) => {
     const onConfusionButtonPress = (data) => {
+        // TODO: Check if the lecture is active and the user is in the lecture
         if (lectures.isLectureActive(data.lectureId)) {
             console.log("SOCKET RESPONSE: ", data);
             button_press_controller.createButtonPress(data);
@@ -11,10 +12,11 @@ module.exports = (io, socket, lectures) => {
         }
     }
     const onJoinLecturePress = (data) => {
-        const { name, code } = data;
+        const { id, code } = data;
+        // TODO: Check if the user is already in a lecture
         if (lectures.isLectureActive(code)) {
-            console.log(`${name} has joined lecture ${code}`);
-            lectures.joinLecture(code, name);
+            console.log(`${id} has joined lecture ${code}`);
+            lectures.joinLecture(code, id);
             socket.join(code);
             console.log(socket.rooms);
         }

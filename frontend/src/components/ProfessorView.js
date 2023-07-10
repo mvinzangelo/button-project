@@ -1,7 +1,5 @@
-import { React, useInsertionEffect, useState, useEffect, useReducer } from 'react';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { React, useState, useEffect } from 'react';
 import Button from "react-bootstrap/Button";
-import Form from 'react-bootstrap/Form';
 import io from 'socket.io-client'
 import "./StudentView.css";
 
@@ -25,7 +23,7 @@ export const ProfessorView = (props) => {
     const createNewLecturePress = () => {
         console.log("=========Create new lecture button pressed=========");
         var data = {
-            "instructor": user.first_name,
+            "professorId": user.id,
         }
         socket.emit('create_new_lecture', data);
     }
@@ -37,7 +35,7 @@ export const ProfessorView = (props) => {
             {/* <Route path="" exact>
                 <Redirect to="/startlecture" />
             </Route> */}
-            <h1>Current lecture code: {lectureCode ? lectureCode : "n/a"}</h1>
+            <h2>Current lecture code: {lectureCode ? lectureCode : "n/a"}</h2>
             <div>
                 <Button onClick={createNewLecturePress}>Start a new lecture</Button>
             </div>
