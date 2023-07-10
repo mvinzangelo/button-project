@@ -194,8 +194,18 @@ function App() {
 
   return (
     <div className="App">
-      <ProfessorView user={user} />
-      <StudentView user={user} />
+      <div style={{
+        background: '#7accff'
+      }}>
+        <h1>Professor view</h1>
+        <ProfessorView user={user} />
+      </div>
+      <div style={{
+        background: '#ff7a7a'
+      }}>
+        <h1>Student view</h1>
+        <StudentView user={user} />
+      </div>
       {/* <h1>Hello{user ? ` ${user.first_name} ${user.last_name}` : " Zoom Apps user"}!</h1> */}
       {/* <p>{`User Context Status: ${userContextStatus}`}</p>
       <p>

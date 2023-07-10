@@ -1,5 +1,4 @@
-import { React, useState } from 'react';
-import { Route, Redirect, useHistory } from "react-router-dom";
+import { React, useEffect, useState } from 'react';
 import Button from "react-bootstrap/Button";
 import Form from 'react-bootstrap/Form';
 import io from 'socket.io-client'
@@ -16,17 +15,22 @@ export const StudentView = (props) => {
     const [lectureCode, setLectureCode] = useState('');
 
     const joinLectureButtonPress = () => {
-        if (lectureCode !== '' && user.first_name !== '') {
-            let name = user.first_name;
+        if (lectureCode !== '' && user.id !== '') {
+            let id = user.id;
             let code = lectureCode;
-            socket.emit('join_lecture', { name, code });
+            socket.emit('join_lecture', { id, code });
         }
+    }
+
+    const leaveLectureButtonPress = () => {
+        socket.emit('check_if_in_lecture', user.id);
+        socket.emit('leave_lecture');
     }
 
     const confusionButtonPress = async () => {
         console.log("=========Confusion button pressed=========");
         var data = {
-            "student": user.first_name,
+            "studentId": user.id,
             // ! should be refactored to be stored in the backend
             "lectureId": lectureCode
         }
@@ -44,6 +48,7 @@ export const StudentView = (props) => {
                         type="text"
                     />
                     <Button onClick={joinLectureButtonPress}>Join lecture</Button>
+                    <Button onClick={leaveLectureButtonPress}>Leave lecture</Button>
                 </Form.Group>
             </Form>
             <div>
