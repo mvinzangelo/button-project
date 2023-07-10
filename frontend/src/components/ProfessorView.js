@@ -28,6 +28,7 @@ export const ProfessorView = (props) => {
         socket.emit('create_new_lecture', data);
     }
     const endCurrentLecturePress = () => {
+        // TODO: get this lecture code from the backend
         socket.emit('end_current_lecture', lectureCode);
     }
     return (

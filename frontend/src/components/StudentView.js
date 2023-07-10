@@ -16,9 +16,9 @@ export const StudentView = (props) => {
 
     const joinLectureButtonPress = () => {
         if (lectureCode !== '' && user.id !== '') {
-            let id = user.id;
+            let studentId = user.id;
             let code = lectureCode;
-            socket.emit('join_lecture', { id, code });
+            socket.emit('join_lecture', { studentId, code });
         }
         else {
             console.error("No user or not in lecture.");
@@ -27,7 +27,8 @@ export const StudentView = (props) => {
 
     const leaveLectureButtonPress = () => {
         if (user.id !== '') {
-            socket.emit('leave_lecture');
+            let studentId = user.id;
+            socket.emit('leave_lecture', studentId);
         }
         else {
             console.error("No user.");

@@ -8,7 +8,7 @@ module.exports = {
       lectureId: data.lectureId,
     })
       .then((data) => {
-        console.log(data);
+        console.log(data.toJSON());
         return data;
       })
       .catch((err) => {
