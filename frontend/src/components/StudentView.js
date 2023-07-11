@@ -1,4 +1,5 @@
 import { React, useEffect, useState } from 'react';
+import { Route, Redirect, useLocation, useHistory } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Form from 'react-bootstrap/Form';
 import io from 'socket.io-client'
@@ -7,6 +8,8 @@ import "./StudentView.css";
 const socket = io.connect();
 
 export const StudentView = (props) => {
+
+    const history = useHistory();
 
     const {
         user
@@ -19,6 +22,7 @@ export const StudentView = (props) => {
             let studentId = user.id;
             let code = lectureCode;
             socket.emit('join_lecture', { studentId, code });
+            history.push("/student/in-lecture");
         }
         else {
             console.error("No user or not in lecture.");
@@ -29,6 +33,7 @@ export const StudentView = (props) => {
         if (user.id !== '') {
             let studentId = user.id;
             socket.emit('leave_lecture', studentId);
+            history.push("/student");
         }
         else {
             console.error("No user.");
@@ -47,21 +52,25 @@ export const StudentView = (props) => {
 
     return (
         <div className="confusion-button-container">
-            <Form>
-                <Form.Group className="mb-3" controlId="fromRoomCode">
-                    <Form.Label>Room code</Form.Label>
-                    <Form.Control placeholder="Enter room code"
-                        value={lectureCode}
-                        onChange={(e) => { setLectureCode(e.target.value) }}
-                        type="text"
-                    />
-                    <Button onClick={joinLectureButtonPress}>Join lecture</Button>
-                    <Button onClick={leaveLectureButtonPress}>Leave lecture</Button>
-                </Form.Group>
-            </Form>
-            <div>
-                <Button onClick={confusionButtonPress}>Press me if you're confused</Button>
-            </div>
+            <Route path='/student/enter-code' exact>
+                <Form>
+                    <Form.Group className="mb-3" controlId="fromRoomCode">
+                        <Form.Label>Room code</Form.Label>
+                        <Form.Control placeholder="Enter room code"
+                            value={lectureCode}
+                            onChange={(e) => { setLectureCode(e.target.value) }}
+                            type="text"
+                        />
+                        <Button onClick={joinLectureButtonPress}>Join lecture</Button>
+                    </Form.Group>
+                </Form>
+            </Route>
+            <Route path='/student/in-lecture' exact>
+                <div>
+                    <Button onClick={confusionButtonPress}>Press me if you're confused</Button>
+                </div>
+                <Button onClick={leaveLectureButtonPress}>Leave lecture</Button>
+            </Route>
         </div>
     )
 }
