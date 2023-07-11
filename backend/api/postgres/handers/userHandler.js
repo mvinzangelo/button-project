@@ -1,8 +1,8 @@
 const user_controller = require('../controllers/user-controller')
 
 module.exports = (io, socket, lectures) => {
-    const onCreateUser = (data) => {
-        user_controller.createUser(data);
+    const onfindOrCreateUser = (data) => {
+        user_controller.findOrCreateUser(data);
     }
 
     const getUserRole = (data) => {
@@ -15,6 +15,6 @@ module.exports = (io, socket, lectures) => {
             });
     }
 
-    socket.on("create_user", onCreateUser)
+    socket.on("create_user", onfindOrCreateUser)
     socket.on("get_user_role", getUserRole)
 }
