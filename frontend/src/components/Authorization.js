@@ -144,8 +144,9 @@ export const Authorization = (props) => {
         const user = await response.json();
         handleUser(user);
         // Create user 
-        const res = await socket.emit("create_user", user);
-        console.log(user);
+        const res = await socket.emit("create_user", user, (response) => {
+          console.log(response[0]);
+        });
         // socket.emit('get_user_role', user.id);
         setShowInClientOAuthPrompt(false);
       } catch (error) {
