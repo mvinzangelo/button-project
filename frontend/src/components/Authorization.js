@@ -22,7 +22,6 @@ export const Authorization = (props) => {
     user,
     userContextStatus,
   } = props;
-  const [userRole, setUserRole] = useState('');
   const location = useLocation();
   const [userAuthorized, setUserAuthorized] = useState(null);
   const [showInClientOAuthPrompt, setShowInClientOAuthPrompt] = useState(false);
@@ -111,16 +110,6 @@ export const Authorization = (props) => {
 
         // the error === string
         handleError(null);
-        // TODO: route based on user role
-        if (userRole == 'student') {
-          history.push("/student");
-        }
-        else if (userRole == 'professor') {
-          history.push("/professor");
-        }
-        else {
-          console.log(userRole);
-        }
       });
     });
   }, [handleError]);
@@ -143,9 +132,10 @@ export const Authorization = (props) => {
         if (response.status !== 200) throw new Error();
         const user = await response.json();
         handleUser(user);
-        // Create user 
+        // Create or find user from database
         const res = await socket.emit("create_user", user, (response) => {
-          console.log(response[0]);
+          user.role = response[0].role
+          handleUser(user);
         });
         // socket.emit('get_user_role', user.id);
         setShowInClientOAuthPrompt(false);
@@ -170,6 +160,17 @@ export const Authorization = (props) => {
     }
   }, [handleUser, handleUserContextStatus, userAuthorized, userContextStatus]);
 
+  const onLogInClicked = () => {
+    if (user !== null) {
+      if (user.role === 'student') {
+        history.push('/student');
+      }
+      else if (user.role === 'professor') {
+        history.push('/professor');
+      }
+    }
+  }
+
   return (
     <>
       <p>You are on this route: {location.pathname}</p>
@@ -178,8 +179,11 @@ export const Authorization = (props) => {
         variant="primary"
         onClick={inGuestMode ? promptAuthorize : authorize}
       >
-        {inGuestMode ? "promptAuthorize" : "authorize"}
+        {inGuestMode ? "promptAuthorize" : "Authorize"}
       </Button>}
+      <div>
+        <Button onClick={onLogInClicked}>Log In</Button>
+      </div>
 
       {/* <div>
         <Header
