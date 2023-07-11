@@ -1,5 +1,5 @@
 /* globals zoomSdk */
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation, useHistory, Route, Redirect } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
 import { apis } from "./apis";
 import { Authorization } from "./components/Authorization";
@@ -194,18 +194,34 @@ function App() {
 
   return (
     <div className="App">
-      <div style={{
-        background: '#7accff'
-      }}>
-        <h1>Professor view</h1>
-        <ProfessorView user={user} />
-      </div>
-      <div style={{
-        background: '#ff7a7a'
-      }}>
-        <h1>Student view</h1>
-        <StudentView user={user} />
-      </div>
+      <Route path="" exact>
+        <Redirect to="/authorize" />
+      </Route>
+      <Route path="/authorize">
+        <Authorization
+          handleError={setError}
+          handleUserContextStatus={setUserContextStatus}
+          handleUser={setUser}
+          user={user}
+          userContextStatus={userContextStatus}
+        />
+      </Route>
+      <Route path="/professor">
+        <div style={{
+          background: '#7accff'
+        }}>
+          <h1>Professor view</h1>
+          <ProfessorView user={user} />
+        </div>
+      </Route>
+      <Route path="/student">
+        <div style={{
+          background: '#ff7a7a'
+        }}>
+          <h1>Student view</h1>
+          <StudentView user={user} />
+        </div>
+      </Route>
       {/* <h1>Hello{user ? ` ${user.first_name} ${user.last_name}` : " Zoom Apps user"}!</h1> */}
       {/* <p>{`User Context Status: ${userContextStatus}`}</p>
       <p>
@@ -216,13 +232,6 @@ function App() {
       </p> */}
 
       {/* <ApiScrollview /> */}
-      <Authorization
-        handleError={setError}
-        handleUserContextStatus={setUserContextStatus}
-        handleUser={setUser}
-        user={user}
-        userContextStatus={userContextStatus}
-      />
 
     </div>
   );

@@ -1,6 +1,6 @@
 /* globals zoomSdk */
 import React, { useEffect, useState } from "react";
-import { Route, Redirect, useLocation } from "react-router-dom";
+import { Route, Redirect, useLocation, useHistory } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Auth0User from "./Auth0User";
 import Header from "./Header";
@@ -12,6 +12,9 @@ import io from 'socket.io-client'
 const socket = io.connect();
 
 export const Authorization = (props) => {
+
+  const history = useHistory();
+
   const {
     handleError,
     handleUser,
@@ -34,6 +37,12 @@ export const Authorization = (props) => {
   };
 
   const authorize = async () => {
+    // TODO: Visually show that the authorize button can't be pressed 
+    if (user === null) {
+      {
+        return;
+      }
+    }
     setShowInClientOAuthPrompt(false);
     console.log("Authorize flow begins here");
     console.log("1. Get code challenge and state from backend . . .");
@@ -106,6 +115,13 @@ export const Authorization = (props) => {
   }, [handleError]);
 
   useEffect(() => {
+    socket.on('return_user_role', (role) => {
+      console.log("RESPONSE ROLE: ", role);
+      setUserRole(role);
+    })
+  })
+
+  useEffect(() => {
     zoomSdk.addEventListener("onMyUserContextChange", (event) => {
       handleUserContextStatus(event.status);
     });
@@ -116,8 +132,12 @@ export const Authorization = (props) => {
         if (response.status !== 200) throw new Error();
         const user = await response.json();
         handleUser(user);
-        console.log(user);
-        socket.emit("create_user", user);
+        // Create or find user from database
+        const res = await socket.emit("create_user", user, (response) => {
+          user.role = response[0].role
+          handleUser(user);
+        });
+        // socket.emit('get_user_role', user.id);
         setShowInClientOAuthPrompt(false);
       } catch (error) {
         console.error(error);
@@ -140,6 +160,17 @@ export const Authorization = (props) => {
     }
   }, [handleUser, handleUserContextStatus, userAuthorized, userContextStatus]);
 
+  const onLogInClicked = () => {
+    if (user !== null) {
+      if (user.role === 'student') {
+        history.push('/student');
+      }
+      else if (user.role === 'professor') {
+        history.push('/professor');
+      }
+    }
+  }
+
   return (
     <>
       <p>You are on this route: {location.pathname}</p>
@@ -148,10 +179,13 @@ export const Authorization = (props) => {
         variant="primary"
         onClick={inGuestMode ? promptAuthorize : authorize}
       >
-        {inGuestMode ? "promptAuthorize" : "authorize"}
+        {inGuestMode ? "promptAuthorize" : "Authorize"}
       </Button>}
-
       <div>
+        <Button onClick={onLogInClicked}>Log In</Button>
+      </div>
+
+      {/* <div>
         <Header
           navLinks={{ userInfo: "User Info", iframe: "IFrame", image: "Image" }}
         />
@@ -176,7 +210,7 @@ export const Authorization = (props) => {
         </Route>
       </div>
       <Header navLinks={{ auth0Data: "Auth0 User Data" }} />
-      <Auth0User user={user} />
+      <Auth0User user={user} /> */}
     </>
   );
 };
