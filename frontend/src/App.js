@@ -207,11 +207,11 @@ function App() {
         />
       </Route>
       <Route path="/professor">
-        <h1>Professor view</h1>
+        <h1>Professor</h1>
         <ProfessorView user={user} />
       </Route>
       <Route path="/student">
-        <h1>Student view</h1>
+        <h1>Student</h1>
         <StudentView user={user} />
       </Route>
       {/* <h1>Hello{user ? ` ${user.first_name} ${user.last_name}` : " Zoom Apps user"}!</h1> */}

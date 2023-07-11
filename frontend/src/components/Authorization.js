@@ -173,7 +173,7 @@ export const Authorization = (props) => {
 
   return (
     <>
-      <p>You are on this route: {location.pathname}</p>
+      {/* <p>You are on this route: {location.pathname}</p> */}
 
       {!inGuestMode && <Button
         variant="primary"
