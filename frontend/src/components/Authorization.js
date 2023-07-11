@@ -163,10 +163,10 @@ export const Authorization = (props) => {
   const onLogInClicked = () => {
     if (user !== null) {
       if (user.role === 'student') {
-        history.push('/student');
+        history.push('/student/enter-code');
       }
       else if (user.role === 'professor') {
-        history.push('/professor');
+        history.push('/professor/create-lecture');
       }
     }
   }

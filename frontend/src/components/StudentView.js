@@ -52,7 +52,7 @@ export const StudentView = (props) => {
 
     return (
         <div className="confusion-button-container">
-            <Route path='/student' exact>
+            <Route path='/student/enter-code' exact>
                 <Form>
                     <Form.Group className="mb-3" controlId="fromRoomCode">
                         <Form.Label>Room code</Form.Label>
@@ -65,7 +65,7 @@ export const StudentView = (props) => {
                     </Form.Group>
                 </Form>
             </Route>
-            <Route path='/student/in-lecture'>
+            <Route path='/student/in-lecture' exact>
                 <div>
                     <Button onClick={confusionButtonPress}>Press me if you're confused</Button>
                 </div>
