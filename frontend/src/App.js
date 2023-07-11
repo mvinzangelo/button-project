@@ -207,20 +207,12 @@ function App() {
         />
       </Route>
       <Route path="/professor">
-        <div style={{
-          background: '#7accff'
-        }}>
-          <h1>Professor view</h1>
-          <ProfessorView user={user} />
-        </div>
+        <h1>Professor view</h1>
+        <ProfessorView user={user} />
       </Route>
       <Route path="/student">
-        <div style={{
-          background: '#ff7a7a'
-        }}>
-          <h1>Student view</h1>
-          <StudentView user={user} />
-        </div>
+        <h1>Student view</h1>
+        <StudentView user={user} />
       </Route>
       {/* <h1>Hello{user ? ` ${user.first_name} ${user.last_name}` : " Zoom Apps user"}!</h1> */}
       {/* <p>{`User Context Status: ${userContextStatus}`}</p>
