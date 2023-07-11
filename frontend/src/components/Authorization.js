@@ -163,17 +163,17 @@ export const Authorization = (props) => {
   const onLogInClicked = () => {
     if (user !== null) {
       if (user.role === 'student') {
-        history.push('/student');
+        history.push('/student/enter-code');
       }
       else if (user.role === 'professor') {
-        history.push('/professor');
+        history.push('/professor/create-lecture');
       }
     }
   }
 
   return (
     <>
-      <p>You are on this route: {location.pathname}</p>
+      {/* <p>You are on this route: {location.pathname}</p> */}
 
       {!inGuestMode && <Button
         variant="primary"

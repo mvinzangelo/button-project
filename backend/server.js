@@ -97,6 +97,9 @@ io.on('connection', (socket) => {
 // ! {force: true} for development purposes only
 db.sequelize.sync({ force: true }).then(async () => {
   console.log("Sync'd successfully.");
+  const lecture_controller = require("./api/postgres/controllers/lecture-controller");
+  const ret = await lecture_controller.createLecture({ professorId: 'test' });
+  lectureStore.addLecture(ret.dataValues);
 }).catch((error) => {
   console.error("Unable to sync : ", error);
 });
