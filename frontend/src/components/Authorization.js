@@ -1,6 +1,6 @@
 /* globals zoomSdk */
 import React, { useEffect, useState } from "react";
-import { Route, Redirect, useLocation } from "react-router-dom";
+import { Route, Redirect, useLocation, useHistory } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Auth0User from "./Auth0User";
 import Header from "./Header";
@@ -12,6 +12,9 @@ import io from 'socket.io-client'
 const socket = io.connect();
 
 export const Authorization = (props) => {
+
+  const history = useHistory();
+
   const {
     handleError,
     handleUser,
@@ -19,6 +22,7 @@ export const Authorization = (props) => {
     user,
     userContextStatus,
   } = props;
+  const [userRole, setUserRole] = useState('');
   const location = useLocation();
   const [userAuthorized, setUserAuthorized] = useState(null);
   const [showInClientOAuthPrompt, setShowInClientOAuthPrompt] = useState(false);
@@ -34,6 +38,12 @@ export const Authorization = (props) => {
   };
 
   const authorize = async () => {
+    // TODO: Visually show that the authorize button can't be pressed 
+    if (user === null) {
+      {
+        return;
+      }
+    }
     setShowInClientOAuthPrompt(false);
     console.log("Authorize flow begins here");
     console.log("1. Get code challenge and state from backend . . .");
@@ -101,9 +111,26 @@ export const Authorization = (props) => {
 
         // the error === string
         handleError(null);
+        // TODO: route based on user role
+        if (userRole == 'student') {
+          history.push("/student");
+        }
+        else if (userRole == 'professor') {
+          history.push("/professor");
+        }
+        else {
+          console.log(userRole);
+        }
       });
     });
   }, [handleError]);
+
+  useEffect(() => {
+    socket.on('return_user_role', (role) => {
+      console.log("RESPONSE ROLE: ", role);
+      setUserRole(role);
+    })
+  })
 
   useEffect(() => {
     zoomSdk.addEventListener("onMyUserContextChange", (event) => {
@@ -116,8 +143,9 @@ export const Authorization = (props) => {
         if (response.status !== 200) throw new Error();
         const user = await response.json();
         handleUser(user);
-        console.log(user);
-        socket.emit("create_user", user);
+        // Create user 
+        const res = await socket.emit("create_user", user);
+        socket.emit('get_user_role', user.id);
         setShowInClientOAuthPrompt(false);
       } catch (error) {
         console.error(error);
@@ -151,7 +179,7 @@ export const Authorization = (props) => {
         {inGuestMode ? "promptAuthorize" : "authorize"}
       </Button>}
 
-      <div>
+      {/* <div>
         <Header
           navLinks={{ userInfo: "User Info", iframe: "IFrame", image: "Image" }}
         />
@@ -176,7 +204,7 @@ export const Authorization = (props) => {
         </Route>
       </div>
       <Header navLinks={{ auth0Data: "Auth0 User Data" }} />
-      <Auth0User user={user} />
+      <Auth0User user={user} /> */}
     </>
   );
 };
