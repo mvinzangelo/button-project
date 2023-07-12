@@ -6,6 +6,7 @@ module.exports = {
     return Button_Press.create({
       studentId: data.studentId,
       lectureId: data.lectureId,
+      time: data.time
     })
       .then((data) => {
         console.log(data.toJSON());
