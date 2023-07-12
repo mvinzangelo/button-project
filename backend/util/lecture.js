@@ -1,4 +1,5 @@
 const { UUIDV4 } = require("sequelize");
+const Stopwatch = require('statman-stopwatch');
 
 const ROOM_MAX_CAPACITY = 300;
 
@@ -10,6 +11,7 @@ class Lecture {
     addLecture(lecture) {
         this.lecturesState.push({
             info: lecture,
+            time: new Stopwatch(true),
             students: []
         });
     }
@@ -19,6 +21,14 @@ class Lecture {
                 this.lecturesState[i].students.push(student);
             }
         }
+    }
+    getTime(lectureCode) {
+        for (let i = 0; i < this.lecturesState.length; i++) {
+            if (this.lecturesState[i].info.id === lectureCode) {
+                return this.lecturesState[i].time.read();
+            }
+        }
+        return 0;
     }
     removeLecture(lectureCode) {
         const objWithIdIndex = this.lecturesState.findIndex((obj) => obj.info.id === lectureCode);
