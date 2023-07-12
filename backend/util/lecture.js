@@ -7,7 +7,7 @@ class Lecture {
     constructor() {
         this.lecturesState = [];
     }
-
+    // TODO: Create function to pause the time
     addLecture(lecture) {
         this.lecturesState.push({
             info: lecture,
