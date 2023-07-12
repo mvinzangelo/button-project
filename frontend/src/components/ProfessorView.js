@@ -15,10 +15,11 @@ export const ProfessorView = (props) => {
     } = props
 
     const [lectureCode, setLectureCode] = useState('');
+    const [lecturePresses, setLecturePresses] = useState([]);
 
     useEffect(() => {
         socket.on('return_lecture_id', (res) => {
-            console.log("RESPONSE: ", res);
+            console.log("RES LECTURE ID: ", res);
             setLectureCode(res);
         });
     });
@@ -35,8 +36,14 @@ export const ProfessorView = (props) => {
     }
     const endCurrentLecturePress = () => {
         // TODO: get this lecture code from the backend
-        socket.emit('end_current_lecture', lectureCode, (response) => {
-            console.log(response);
+        socket.emit('end_current_lecture', lectureCode, (presses) => {
+            for (let i = 0; i < presses.length; i++) {
+                console.log(presses[i]);
+                setLecturePresses(lecturePresses.push(presses[i]));
+            }
+            // console.log(typeof (presses));
+            // console.log(presses);
+            // console.log(lecturePresses);
         });
         history.push('/professor/create-lecture');
     }
