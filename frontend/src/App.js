@@ -205,6 +205,8 @@ function App() {
           user={user}
           userContextStatus={userContextStatus}
         />
+        {/* <Button>Set role "student"</Button>
+        <Button>Set role "professor"</Button> */}
       </Route>
       <Route path="/professor">
         <h1>Professor</h1>

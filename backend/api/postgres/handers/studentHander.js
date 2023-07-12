@@ -6,6 +6,7 @@ module.exports = (io, socket, lectures) => {
         // TODO: Check if the lecture is active and the user is in the lecture
         if (lectures.isLectureActive(data.lectureId)) {
             console.log("SOCKET RESPONSE: ", data);
+            data.time = lectures.getTime(data.lectureId);
             button_press_controller.createButtonPress(data);
         }
         else {

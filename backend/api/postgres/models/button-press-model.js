@@ -3,6 +3,10 @@ module.exports = (sequelize, Sequelize) => {
     studentId: {
       type: Sequelize.STRING,
       allowNull: false
+    },
+    time: {
+      type: Sequelize.FLOAT,
+      allowNull: false
     }
   });
 
