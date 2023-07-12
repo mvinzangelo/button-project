@@ -194,28 +194,30 @@ function App() {
 
   return (
     <div className="App">
-      <Route path="" exact>
-        <Redirect to="/authorize" />
-      </Route>
-      <Route path="/authorize">
-        <Authorization
-          handleError={setError}
-          handleUserContextStatus={setUserContextStatus}
-          handleUser={setUser}
-          user={user}
-          userContextStatus={userContextStatus}
-        />
-        {/* <Button>Set role "student"</Button>
+
+      {/* <Route path="" exact> */}
+      <Redirect to="/authorize" />
+      {/* </Route> */}
+
+      {/* <Route path="/authorize"> */}
+      <Authorization
+        handleError={setError}
+        handleUserContextStatus={setUserContextStatus}
+        handleUser={setUser}
+        user={user}
+        userContextStatus={userContextStatus}
+      />
+      {/* <Button>Set role "student"</Button>
         <Button>Set role "professor"</Button> */}
-      </Route>
-      <Route path="/professor">
-        <h1>Professor</h1>
-        <ProfessorView user={user} />
-      </Route>
-      <Route path="/student">
-        <h1>Student</h1>
-        <StudentView user={user} />
-      </Route>
+      {/* </Route> */}
+      {/* <Route path="/professor"> */}
+      <h1>Professor</h1>
+      <ProfessorView user={user} />
+      {/* </Route> */}
+      {/* <Route path="/student"> */}
+      <h1>Student</h1>
+      <StudentView user={user} />
+      {/* </Route> */}
       {/* <h1>Hello{user ? ` ${user.first_name} ${user.last_name}` : " Zoom Apps user"}!</h1> */}
       {/* <p>{`User Context Status: ${userContextStatus}`}</p>
       <p>
