@@ -40,17 +40,17 @@ export const ProfessorView = (props) => {
     }
     return (
         <div className="professor-view-container">
-            <Route path='/professor/create-lecture'>
-                <div>
-                    <Button onClick={createNewLecturePress}>Start a new lecture</Button>
-                </div>
-            </Route>
-            <Route path='/professor/in-lecture'>
-                <h2>Current lecture code: {lectureCode ? lectureCode : "n/a"}</h2>
-                <div>
-                    <Button onClick={endCurrentLecturePress}>End current lecture</Button>
-                </div>
-            </Route>
+            {/* <Route path='/professor/create-lecture'> */}
+            <div>
+                <Button onClick={createNewLecturePress}>Start a new lecture</Button>
+            </div>
+            {/* </Route> */}
+            {/* <Route path='/professor/in-lecture'> */}
+            <h2>Current lecture code: {lectureCode ? lectureCode : "n/a"}</h2>
+            <div>
+                <Button onClick={endCurrentLecturePress}>End current lecture</Button>
+            </div>
+            {/* </Route> */}
         </div>
     )
 }
