@@ -17,7 +17,21 @@ module.exports = {
         return err;
       });
   },
-
+  findAllByLectureId: function (lectureId) {
+    return Button_Press.findAll({
+      where: {
+        lectureId: lectureId
+      }
+    })
+      .then((data) => {
+        console.log(data);
+        return data;
+      })
+      .catch((err) => {
+        console.log(err);
+        return err;
+      });
+  },
   create: function (req, res) {
     console.log("======Button press recorded======");
     // Validate request
