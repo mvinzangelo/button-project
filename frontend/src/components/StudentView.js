@@ -33,7 +33,7 @@ export const StudentView = (props) => {
         if (user.id !== '') {
             let studentId = user.id;
             socket.emit('leave_lecture', studentId);
-            history.push("/student");
+            history.push("/student/enter-code");
         }
         else {
             console.error("No user.");
