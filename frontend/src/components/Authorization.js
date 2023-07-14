@@ -8,6 +8,7 @@ import IFrame from "./IFrame";
 import Image from "./Image";
 import UserInfo from "./UserInfo";
 import io from 'socket.io-client'
+import "./Authorization.css";
 
 const socket = io.connect();
 
@@ -172,7 +173,7 @@ export const Authorization = (props) => {
   }
 
   return (
-    <>
+    <div className='authorization-container'>
       {/* <p>You are on this route: {location.pathname}</p> */}
 
       {!inGuestMode && <Button
@@ -211,6 +212,6 @@ export const Authorization = (props) => {
       </div>
       <Header navLinks={{ auth0Data: "Auth0 User Data" }} />
       <Auth0User user={user} /> */}
-    </>
+    </div>
   );
 };

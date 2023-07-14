@@ -194,9 +194,11 @@ function App() {
 
   return (
     <div className="App">
+
       <Route path="" exact>
         <Redirect to="/authorize" />
       </Route>
+
       <Route path="/authorize">
         <Authorization
           handleError={setError}

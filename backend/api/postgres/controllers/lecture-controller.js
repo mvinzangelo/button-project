@@ -19,7 +19,9 @@ module.exports = {
         return Lecture.update({
             isActive: false
         }, {
-            where: { id: lectureId }
+            where: { id: lectureId },
+            returning: true,
+            plain: true
         })
             .then((data) => {
                 console.log(data);
