@@ -51,7 +51,7 @@ export const StudentView = (props) => {
     };
 
     return (
-        <div className="confusion-button-container">
+        <div className="student-view-container">
             {/* <Route path='/student/enter-code' exact> */}
             <Form>
                 <Form.Group className="mb-3" controlId="fromRoomCode">
