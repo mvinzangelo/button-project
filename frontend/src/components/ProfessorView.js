@@ -46,8 +46,8 @@ export const ProfessorView = (props) => {
     function convertHistData(data, binInterval) {
         return data.map((x, index) => (
             {
-                name: millisToMinutesAndSeconds(index * binInterval),
-                pv: x
+                time: millisToMinutesAndSeconds(index * binInterval),
+                presses: x
             }
         ));
     }
@@ -68,18 +68,17 @@ export const ProfessorView = (props) => {
         }
         else {
             return (
-                <ResponsiveContainer width="90%" height="75%">
+                <ResponsiveContainer className="graph-container" width="90%" height="80%">
                     <LineChart
                         width={500}
                         height={300}
                         data={graphData}
                     >
                         <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" />
-                        <YAxis />
+                        <XAxis height={50} dataKey="time" label={{ value: 'Timestamp', position: 'insideBottom', offset: 0 }} />
+                        <YAxis width={50} label={{ value: 'Number of button presses', angle: -90, position: 'insideLeft', offset: 0 }} />
                         <Tooltip />
-                        <Legend />
-                        <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
+                        <Line type="monotone" dataKey="presses" stroke="#8884d8" activeDot={{ r: 8 }} />
                     </LineChart>
                 </ResponsiveContainer>
             )
