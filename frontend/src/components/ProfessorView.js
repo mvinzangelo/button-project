@@ -60,7 +60,7 @@ export const ProfessorView = (props) => {
         }
         socket.emit('create_new_lecture', data);
         history.push('/professor/in-lecture');
-
+        setGraphData(null);
     }
     function ButtonGraph() {
         if (graphData === null) {
