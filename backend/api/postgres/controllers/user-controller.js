@@ -2,11 +2,6 @@ const db = require("../models");
 const User = db.users;
 
 module.exports = {
-    checkUser: function (id) {
-        return User.findOne({ where: { id }, attributes: ['id'] })
-            .then(token => token !== null)
-            .then(idExists => idExists);
-    },
     findOrCreateUser: function (user) {
         return User.findOrCreate({
             where: { id: user.id },

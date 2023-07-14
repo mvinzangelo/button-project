@@ -33,6 +33,7 @@ export const StudentView = (props) => {
         if (user.id !== '') {
             let studentId = user.id;
             socket.emit('leave_lecture', studentId);
+            setLectureCode('');
             history.push("/student/enter-code");
         }
         else {
@@ -51,7 +52,7 @@ export const StudentView = (props) => {
     };
 
     return (
-        <div className="confusion-button-container">
+        <div className="student-view-container">
             <Route path='/student/enter-code' exact>
                 <Form>
                     <Form.Group className="mb-3" controlId="fromRoomCode">

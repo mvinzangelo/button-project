@@ -15,6 +15,7 @@
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
     "react-select": "^4.3.1",
+    "recharts": "^2.7.2",
     "socket.io-client": "^4.7.1",
     "web-vitals": "^0.2.4"
   },
