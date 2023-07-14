@@ -33,9 +33,13 @@ class Lecture {
     removeLecture(lectureCode) {
         const objWithIdIndex = this.lecturesState.findIndex((obj) => obj.info.id === lectureCode);
         if (objWithIdIndex > -1) {
+            const endTime = this.lecturesState[objWithIdIndex].time.read();
             this.lecturesState.splice(objWithIdIndex, 1);
+            return endTime;
         }
-        return this.lecturesState;
+        else {
+            return -1;
+        }
     }
     isLectureActive(lectureCode) {
         const objWithIdIndex = this.lecturesState.findIndex((obj) => obj.info.id === lectureCode);

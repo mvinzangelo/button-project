@@ -20,11 +20,11 @@ module.exports = (io, socket, lectures) => {
                 // TODO: update the database when the lecture ends
                 socket.to(data).emit("lecture_ended", data);
                 socket.emit('return_lecture_id', 'n/a');
-                lectures.removeLecture(data);
+                const endTime = lectures.removeLecture(data);
                 // get all button presses associated with lecture
-                const button_presses = await button_prress_controller.findAllByLectureId(data);
+                const buttonPresses = await button_prress_controller.findAllByLectureId(data);
                 // return all data in callback
-                callback(button_presses);
+                callback(buttonPresses, endTime);
                 console.log("------------lectureStore state------------\n", lectures.lecturesState);
             });
     }
