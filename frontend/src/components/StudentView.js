@@ -33,6 +33,7 @@ export const StudentView = (props) => {
         if (user.id !== '') {
             let studentId = user.id;
             socket.emit('leave_lecture', studentId);
+            setLectureCode('');
             history.push("/student/enter-code");
         }
         else {
@@ -52,25 +53,25 @@ export const StudentView = (props) => {
 
     return (
         <div className="student-view-container">
-            {/* <Route path='/student/enter-code' exact> */}
-            <Form>
-                <Form.Group className="mb-3" controlId="fromRoomCode">
-                    <Form.Label>Room code</Form.Label>
-                    <Form.Control placeholder="Enter room code"
-                        value={lectureCode}
-                        onChange={(e) => { setLectureCode(e.target.value) }}
-                        type="text"
-                    />
-                    <Button onClick={joinLectureButtonPress}>Join lecture</Button>
-                </Form.Group>
-            </Form>
-            {/* </Route> */}
-            {/* <Route path='/student/in-lecture' exact> */}
-            <div>
-                <Button onClick={confusionButtonPress}>Press me if you're confused</Button>
-            </div>
-            <Button onClick={leaveLectureButtonPress}>Leave lecture</Button>
-            {/* </Route> */}
+            <Route path='/student/enter-code' exact>
+                <Form>
+                    <Form.Group className="mb-3" controlId="fromRoomCode">
+                        <Form.Label>Room code</Form.Label>
+                        <Form.Control placeholder="Enter room code"
+                            value={lectureCode}
+                            onChange={(e) => { setLectureCode(e.target.value) }}
+                            type="text"
+                        />
+                        <Button onClick={joinLectureButtonPress}>Join lecture</Button>
+                    </Form.Group>
+                </Form>
+            </Route>
+            <Route path='/student/in-lecture' exact>
+                <div>
+                    <Button onClick={confusionButtonPress}>Press me if you're confused</Button>
+                </div>
+                <Button onClick={leaveLectureButtonPress}>Leave lecture</Button>
+            </Route>
         </div>
     )
 }

@@ -19,6 +19,7 @@ export const ProfessorView = (props) => {
     const [lectureCode, setLectureCode] = useState('');
     const [lecturePresses, setLecturePresses] = useState([]);
     const [graphData, setGraphData] = useState(null);
+    const [lectureData, setLectureData] = useState(null);
 
     useEffect(() => {
         socket.on('return_lecture_id', (res) => {
@@ -52,6 +53,11 @@ export const ProfessorView = (props) => {
         ));
     }
 
+    const exitDataView = () => {
+        setGraphData(null);
+        history.push('/professor/create-lecture');
+    }
+
     const createNewLecturePress = () => {
         // TODO: add a check if they're already in a lecture
         console.log("=========Create new lecture button pressed=========");
@@ -60,7 +66,6 @@ export const ProfessorView = (props) => {
         }
         socket.emit('create_new_lecture', data);
         history.push('/professor/in-lecture');
-        setGraphData(null);
     }
     function ButtonGraph() {
         if (graphData === null) {
@@ -86,13 +91,15 @@ export const ProfessorView = (props) => {
     }
     const endCurrentLecturePress = () => {
         // TODO: get this lecture code from the backend
-        socket.emit('end_current_lecture', lectureCode, (presses, endTime) => {
+        socket.emit('end_current_lecture', lectureCode, (lecture, presses, endTime) => {
             for (let i = 0; i < presses.length; i++) {
                 console.log(presses[i].time);
                 setLecturePresses(lecturePresses.push(presses[i].time));
             }
-            console.log(lecturePresses);
-            console.log(endTime);
+            console.log("lecture data: ", lecture[1]);
+            setLectureData(lecture[1]);
+            // console.log(lecturePresses);
+            // console.log(endTime);
             // create histogram for data
             const hist = histogram(lecturePresses, binInterval, endTime);
             // set the data to be an array of objects 
@@ -101,24 +108,26 @@ export const ProfessorView = (props) => {
 
             console.log("histogram : ", hist);
         });
-        history.push('/professor/create-lecture');
+        history.push('/professor/lecture-data');
     }
     return (
         <div className="professor-view-container">
-            {/* <Route path='/professor/create-lecture'> */}
-            <div>
-                <Button onClick={createNewLecturePress}>Start a new lecture</Button>
-            </div>
-            {/* </Route> */}
-            {/* <Route path='/professor/in-lecture'> */}
-            <h2>Current lecture code: {lectureCode ? lectureCode : "n/a"}</h2>
-            <div>
-                <Button onClick={endCurrentLecturePress}>End current lecture</Button>
-            </div>
-            {/* </Route> */}
-            {/* <Route path='/professor/lecture-data'> */}
-            {/* </Route> */}
-            <ButtonGraph />
+            <Route path='/professor/create-lecture'>
+                <div>
+                    <Button onClick={createNewLecturePress}>Start a new lecture</Button>
+                </div>
+            </Route>
+            <Route path='/professor/in-lecture'>
+                <h2>Current lecture code: {lectureCode ? lectureCode : "n/a"}</h2>
+                <div>
+                    <Button onClick={endCurrentLecturePress}>End current lecture</Button>
+                </div>
+            </Route>
+            <Route path='/professor/lecture-data'>
+                <h1 class="text-center">Lecture {lectureData ? lectureData.createdAt.slice(0, 10) : "null"}</h1>
+                <ButtonGraph />
+                <Button onClick={exitDataView}>Exit</Button>
+            </Route>
         </div>
     )
 }
