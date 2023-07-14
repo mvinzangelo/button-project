@@ -63,22 +63,27 @@ export const ProfessorView = (props) => {
 
     }
     function ButtonGraph() {
-        return (
-            <ResponsiveContainer width="50%" height="50%">
-                <LineChart
-                    width={500}
-                    height={300}
-                    data={graphData}
-                >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
-                </LineChart>
-            </ResponsiveContainer>
-        )
+        if (graphData === null) {
+            return <></>
+        }
+        else {
+            return (
+                <ResponsiveContainer width="90%" height="75%">
+                    <LineChart
+                        width={500}
+                        height={300}
+                        data={graphData}
+                    >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="name" />
+                        <YAxis />
+                        <Tooltip />
+                        <Legend />
+                        <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
+                    </LineChart>
+                </ResponsiveContainer>
+            )
+        }
     }
     const endCurrentLecturePress = () => {
         // TODO: get this lecture code from the backend
