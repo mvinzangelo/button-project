@@ -24,7 +24,7 @@ module.exports = (io, socket, lectures) => {
                 // get all button presses associated with lecture
                 const buttonPresses = await button_prress_controller.findAllByLectureId(data);
                 // return all data in callback
-                callback(buttonPresses, endTime);
+                callback(ret, buttonPresses, endTime);
                 console.log("------------lectureStore state------------\n", lectures.lecturesState);
             });
     }
