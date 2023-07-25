@@ -49,8 +49,14 @@ export const StudentView = (props) => {
             // ! should be refactored to be stored in the backend
             "lectureId": lectureCode
         }
-        socket.emit('button_press', data);
-        setButtonResponse("Button pressed!");
+        socket.emit('button_press', data, (success) => {
+            if (success) {
+                setButtonResponse("Button press successfully recorded!");
+            }
+            else {
+                setButtonResponse("Error: there was a problem recording the button press.");
+            }
+        });
     };
 
     return (
