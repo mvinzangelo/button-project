@@ -16,8 +16,9 @@ export const StudentView = (props) => {
     } = props
 
     const [lectureCode, setLectureCode] = useState('');
-    const [buttonResponse, setButtonResponse] = useState('');
+    const [buttonResponseText, setbuttonResponseText] = useState('');
     const [textClass, setTextClass] = useState("text-primary");
+    const [isTextVisible, setIsTextVisible] = useState(false);
 
     const joinLectureButtonPress = () => {
         if (lectureCode !== '' && user.id !== '') {
@@ -43,6 +44,21 @@ export const StudentView = (props) => {
         }
     }
 
+    async function setButtonResposneText(response) {
+        setIsTextVisible(true);
+        if (response) {
+            setbuttonResponseText("Button press successfully recorded!");
+            setTextClass("text-success");
+        }
+        else {
+            setbuttonResponseText("Error: there was a problem recording the button press.");
+            setTextClass("text-danger");
+        }
+        setTimeout(() => {
+            setIsTextVisible(false);
+        }, 2000);
+    }
+
     const confusionButtonPress = async () => {
         console.log("=========Confusion button pressed=========");
         var data = {
@@ -50,15 +66,8 @@ export const StudentView = (props) => {
             // ! should be refactored to be stored in the backend
             "lectureId": lectureCode
         }
-        socket.emit('button_press', data, (success) => {
-            if (success) {
-                setButtonResponse("Button press successfully recorded!");
-                setTextClass("text-success");
-            }
-            else {
-                setButtonResponse("Error: there was a problem recording the button press.");
-                setTextClass("text-danger");
-            }
+        socket.emit('button_press', data, (isSuccess) => {
+            setButtonResposneText(isSuccess);
         });
     };
 
@@ -78,12 +87,12 @@ export const StudentView = (props) => {
                 </Form>
             </Route>
             <Route path='/student/in-lecture' exact>
-                <div>
+                <div className="confusion-button-container">
                     <Button onClick={confusionButtonPress}>Press me if you're confused</Button>
                 </div>
-                <div>
-                    <small class={textClass}>{buttonResponse}</small>
-                </div>
+                {isTextVisible && <div className="response-text-container">
+                    <small class={textClass}>{buttonResponseText}</small>
+                </div>}
                 <div>
                     <Button onClick={leaveLectureButtonPress}>Leave lecture</Button>
                 </div>
