@@ -17,6 +17,7 @@ export const StudentView = (props) => {
 
     const [lectureCode, setLectureCode] = useState('');
     const [buttonResponse, setButtonResponse] = useState('');
+    const [textClass, setTextClass] = useState("text-primary");
 
     const joinLectureButtonPress = () => {
         if (lectureCode !== '' && user.id !== '') {
@@ -52,9 +53,11 @@ export const StudentView = (props) => {
         socket.emit('button_press', data, (success) => {
             if (success) {
                 setButtonResponse("Button press successfully recorded!");
+                setTextClass("text-success");
             }
             else {
                 setButtonResponse("Error: there was a problem recording the button press.");
+                setTextClass("text-danger");
             }
         });
     };
@@ -76,10 +79,10 @@ export const StudentView = (props) => {
             </Route>
             <Route path='/student/in-lecture' exact>
                 <div>
-                    <Button class="form-control" onClick={confusionButtonPress}>Press me if you're confused</Button>
+                    <Button onClick={confusionButtonPress}>Press me if you're confused</Button>
                 </div>
                 <div>
-                    <small class="form-text text-muted">{buttonResponse}</small>
+                    <small class={textClass}>{buttonResponse}</small>
                 </div>
                 <div>
                     <Button onClick={leaveLectureButtonPress}>Leave lecture</Button>
