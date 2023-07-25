@@ -16,6 +16,7 @@ export const StudentView = (props) => {
     } = props
 
     const [lectureCode, setLectureCode] = useState('');
+    const [buttonResponse, setButtonResponse] = useState('');
 
     const joinLectureButtonPress = () => {
         if (lectureCode !== '' && user.id !== '') {
@@ -49,6 +50,7 @@ export const StudentView = (props) => {
             "lectureId": lectureCode
         }
         socket.emit('button_press', data);
+        setButtonResponse("Button pressed!");
     };
 
     return (
@@ -68,9 +70,14 @@ export const StudentView = (props) => {
             </Route>
             <Route path='/student/in-lecture' exact>
                 <div>
-                    <Button onClick={confusionButtonPress}>Press me if you're confused</Button>
+                    <Button class="form-control" onClick={confusionButtonPress}>Press me if you're confused</Button>
                 </div>
-                <Button onClick={leaveLectureButtonPress}>Leave lecture</Button>
+                <div>
+                    <small class="form-text text-muted">{buttonResponse}</small>
+                </div>
+                <div>
+                    <Button onClick={leaveLectureButtonPress}>Leave lecture</Button>
+                </div>
             </Route>
         </div>
     )
