@@ -19,6 +19,7 @@ export const StudentView = (props) => {
     const [buttonResponseText, setbuttonResponseText] = useState('');
     const [textClass, setTextClass] = useState("text-primary");
     const [isTextVisible, setIsTextVisible] = useState(false);
+    const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
     const joinLectureButtonPress = () => {
         if (lectureCode !== '' && user.id !== '') {
@@ -46,6 +47,7 @@ export const StudentView = (props) => {
 
     async function setButtonResposneText(response) {
         setIsTextVisible(true);
+        setIsButtonDisabled(true);
         if (response) {
             setbuttonResponseText("Button press successfully recorded!");
             setTextClass("text-success");
@@ -56,6 +58,7 @@ export const StudentView = (props) => {
         }
         setTimeout(() => {
             setIsTextVisible(false);
+            setIsButtonDisabled(false);
         }, 2000);
     }
 
@@ -88,7 +91,7 @@ export const StudentView = (props) => {
             </Route>
             <Route path='/student/in-lecture' exact>
                 <div className="confusion-button-container">
-                    <Button onClick={confusionButtonPress}>Press me if you're confused</Button>
+                    <Button disabled={isButtonDisabled} onClick={confusionButtonPress}>Press me if you're confused</Button>
                 </div>
                 {isTextVisible && <div className="response-text-container">
                     <small class={textClass}>{buttonResponseText}</small>
