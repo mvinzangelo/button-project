@@ -16,6 +16,10 @@ export const StudentView = (props) => {
     } = props
 
     const [lectureCode, setLectureCode] = useState('');
+    const [buttonResponseText, setbuttonResponseText] = useState('');
+    const [textClass, setTextClass] = useState("text-primary");
+    const [isTextVisible, setIsTextVisible] = useState(false);
+    const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
     const joinLectureButtonPress = () => {
         if (lectureCode !== '' && user.id !== '') {
@@ -41,6 +45,23 @@ export const StudentView = (props) => {
         }
     }
 
+    async function setButtonResposneText(response) {
+        setIsTextVisible(true);
+        setIsButtonDisabled(true);
+        if (response) {
+            setbuttonResponseText("Button press successfully recorded!");
+            setTextClass("text-success");
+        }
+        else {
+            setbuttonResponseText("Error: there was a problem recording the button press.");
+            setTextClass("text-danger");
+        }
+        setTimeout(() => {
+            setIsTextVisible(false);
+            setIsButtonDisabled(false);
+        }, 2000);
+    }
+
     const confusionButtonPress = async () => {
         console.log("=========Confusion button pressed=========");
         var data = {
@@ -48,7 +69,9 @@ export const StudentView = (props) => {
             // ! should be refactored to be stored in the backend
             "lectureId": lectureCode
         }
-        socket.emit('button_press', data);
+        socket.emit('button_press', data, (isSuccess) => {
+            setButtonResposneText(isSuccess);
+        });
     };
 
     return (
@@ -67,10 +90,15 @@ export const StudentView = (props) => {
                 </Form>
             </Route>
             <Route path='/student/in-lecture' exact>
-                <div>
-                    <Button onClick={confusionButtonPress}>Press me if you're confused</Button>
+                <div className="confusion-button-container">
+                    <Button disabled={isButtonDisabled} onClick={confusionButtonPress}>Press me if you're confused</Button>
                 </div>
-                <Button onClick={leaveLectureButtonPress}>Leave lecture</Button>
+                {isTextVisible && <div className="response-text-container">
+                    <small class={textClass}>{buttonResponseText}</small>
+                </div>}
+                <div>
+                    <Button onClick={leaveLectureButtonPress}>Leave lecture</Button>
+                </div>
             </Route>
         </div>
     )
