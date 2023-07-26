@@ -2,12 +2,21 @@ const button_press_controller = require('../controllers/button-press-controller'
 const user_controller = require('../controllers/user-controller')
 
 module.exports = (io, socket, lectures) => {
-    const onConfusionButtonPress = (data) => {
+    const onConfusionButtonPress = (data, callback) => {
         // TODO: Check if the lecture is active and the user is in the lecture
         if (lectures.isLectureActive(data.lectureId)) {
             console.log("SOCKET RESPONSE: ", data);
             data.time = lectures.getTime(data.lectureId);
-            button_press_controller.createButtonPress(data);
+            button_press_controller.createButtonPress(data)
+                .then(async (ret) => {
+                    // utilizing duck-typing
+                    if (ret && ret.stack && ret.message) {
+                        callback(false);
+                    }
+                    else {
+                        callback(true);
+                    }
+                })
         }
         else {
             console.error("Error creating button press: lecutre is not active");

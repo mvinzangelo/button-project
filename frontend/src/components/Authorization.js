@@ -183,7 +183,7 @@ export const Authorization = (props) => {
         {inGuestMode ? "promptAuthorize" : "Authorize"}
       </Button>}
       <div>
-        <Button onClick={onLogInClicked}>Log In</Button>
+        <Button onClick={onLogInClicked} disabled={user === null}>Log In</Button>
       </div>
 
       {/* <div>
