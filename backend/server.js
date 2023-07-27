@@ -49,7 +49,17 @@ if (
 
 app.use('/zoom', zoomRouter)
 
-// Postgres route
+// deauthorizaiton endpoint
+app.post('/api/zoomapp/deauth', (req, res, next) => {
+  if (req.header.authorization === process.env.VERIFICATION_TOKEN) {
+    console.log("User deauthorized");
+  }
+  else {
+    const error = new Error('Unauthorized request')
+    error.status = 401
+    next(error)
+  }
+});
 
 app.get('/hello', (req, res) => {
   res.send('THEK1NG0FGAM3S')
