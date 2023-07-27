@@ -22,6 +22,7 @@ const envars = [
   'POSTGRES_DATABASE',
   'POSTGRES_PASSWORD',
   'POSTGRES_PORT',
+  'VERIFICATION_TOKEN',
 ]
 
 envars.forEach((envar) => {
