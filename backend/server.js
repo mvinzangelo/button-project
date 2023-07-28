@@ -61,6 +61,20 @@ app.post('/api/zoomapp/deauth', (req, res, next) => {
   }
 });
 
+// business endpoints
+app.get("/terms-of-use", (req, res) => {
+  res.sendFile(__dirname + "/docs/terms-of-use.html");
+})
+app.get("/privacy-policy", (req, res) => {
+  res.sendFile(__dirname + "/docs/privacy-policy.html");
+})
+app.get("/support", (req, res) => {
+  res.sendFile(__dirname + "/docs/support.html");
+})
+app.get("/documentation", (req, res) => {
+  res.sendFile(__dirname + "/docs/documentation.html");
+})
+
 app.get('/hello', (req, res) => {
   res.send('THEK1NG0FGAM3S')
 })
