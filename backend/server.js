@@ -75,6 +75,16 @@ app.get("/documentation", (req, res) => {
   res.sendFile(__dirname + "/docs/documentation.html");
 })
 
+// validation
+const fs = require('fs');
+const content = '628adf0a608e430cb1b9c9b34b2e8cb2';
+try {
+  fs.writeFileSync('./zoomverify/verifyzoom.html', content);
+  // file written successfully
+} catch (err) {
+  console.error(err);
+}
+
 app.get('/hello', (req, res) => {
   res.send('THEK1NG0FGAM3S')
 })
