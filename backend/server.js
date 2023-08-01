@@ -78,6 +78,13 @@ app.get("/documentation", (req, res) => {
 // validation
 const fs = require('fs');
 const content = '628adf0a608e430cb1b9c9b34b2e8cb2';
+
+var fs = require('fs');
+var dir = './zoomverify';
+if (!fs.existsSync(dir)){
+    fs.mkdirSync(dir);
+}
+
 try {
   fs.writeFileSync('./zoomverify/verifyzoom.html', content);
   // file written successfully
