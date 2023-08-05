@@ -44,6 +44,15 @@ export const ProfessorView = (props) => {
             if (data.action === "connecting" && location.pathname === "/professor/create-lecture") {
                 createNewLecture();
             }
+            else if (data.action === "paused" && location.pathname === "/professor/in-lecture") {
+                // TODO: emit pause event
+            }
+            else if (data.action === "started" && location.pathname === "/professor/in-lecture") {
+                // TODO: emit resume event
+            }
+            else if (data.action === "stopped" && location.pathname === "/professor/in-lecture") {
+                // TODO: end lectre
+            }
             console.log("cloud data: ")
             console.log(data);
             console.log("location: " + location.pathname);
