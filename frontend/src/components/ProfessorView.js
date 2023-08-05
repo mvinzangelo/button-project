@@ -39,6 +39,27 @@ export const ProfessorView = (props) => {
         });
     }
 
+    function endCurrentLecture() {
+        socket.emit('end_current_lecture', lectureCode, (lecture, presses, endTime) => {
+            for (let i = 0; i < presses.length; i++) {
+                console.log(presses[i].time);
+                setLecturePresses(lecturePresses.push(presses[i].time));
+            }
+            console.log("lecture data: ", lecture[1]);
+            setLectureData(lecture[1]);
+            // console.log(lecturePresses);
+            // console.log(endTime);
+            // create histogram for data
+            const hist = histogram(lecturePresses, binInterval, endTime);
+            // set the data to be an array of objects 
+            const graph = convertHistData(hist, binInterval);
+            setGraphData(graph);
+
+            console.log("histogram : ", hist);
+            history.push('/professor/lecture-data');
+        });
+    }
+
     useEffect(() => {
         zoomSdk.onCloudRecording((data) => {
             if (data.action === "connecting" && location.pathname === "/professor/create-lecture") {
@@ -51,7 +72,7 @@ export const ProfessorView = (props) => {
                 // TODO: emit resume event
             }
             else if (data.action === "stopped" && location.pathname === "/professor/in-lecture") {
-                // TODO: end lectre
+                endCurrentLecture();
             }
             console.log("cloud data: ")
             console.log(data);
@@ -119,24 +140,7 @@ export const ProfessorView = (props) => {
     }
     const endCurrentLecturePress = () => {
         // TODO: get this lecture code from the backend
-        socket.emit('end_current_lecture', lectureCode, (lecture, presses, endTime) => {
-            for (let i = 0; i < presses.length; i++) {
-                console.log(presses[i].time);
-                setLecturePresses(lecturePresses.push(presses[i].time));
-            }
-            console.log("lecture data: ", lecture[1]);
-            setLectureData(lecture[1]);
-            // console.log(lecturePresses);
-            // console.log(endTime);
-            // create histogram for data
-            const hist = histogram(lecturePresses, binInterval, endTime);
-            // set the data to be an array of objects 
-            const graph = convertHistData(hist, binInterval);
-            setGraphData(graph);
-
-            console.log("histogram : ", hist);
-            history.push('/professor/lecture-data');
-        });
+        endCurrentLecture();
     }
     return (
         <div className="professor-view-container">
@@ -149,7 +153,7 @@ export const ProfessorView = (props) => {
             <Route path='/professor/in-lecture'>
                 <h2>Current lecture code: {lectureCode ? lectureCode : "n/a"}</h2>
                 <div>
-                    <Button onClick={endCurrentLecturePress}>End current lecture</Button>
+                    {/* <Button onClick={endCurrentLecturePress}>End current lecture</Button> */}
                 </div>
             </Route>
             <Route path='/professor/lecture-data'>
