@@ -33,8 +33,10 @@ export const ProfessorView = (props) => {
         var data = {
             "professorId": user.id,
         }
-        socket.emit('create_new_lecture', data);
-        history.push('/professor/in-lecture');
+        socket.emit('create_new_lecture', data, (lectureId) => {
+            setLectureCode(lectureId);
+            history.push('/professor/in-lecture');
+        });
     }
 
     useEffect(() => {
@@ -124,8 +126,8 @@ export const ProfessorView = (props) => {
             setGraphData(graph);
 
             console.log("histogram : ", hist);
+            history.push('/professor/lecture-data');
         });
-        history.push('/professor/lecture-data');
     }
     return (
         <div className="professor-view-container">
