@@ -30,6 +30,22 @@ class Lecture {
         }
         return 0;
     }
+    pauseTime(lectureCode) {
+        for (let i = 0; i < this.lecturesState.length; i++) {
+            if (this.lecturesState[i].info.id === lectureCode) {
+                return this.lecturesState[i].time.stop();
+            }
+        }
+        return 0;
+    }
+    startTime(lectureCode) {
+        for (let i = 0; i < this.lecturesState.length; i++) {
+            if (this.lecturesState[i].info.id === lectureCode) {
+                return this.lecturesState[i].time.start();
+            }
+        }
+        return 0;
+    }
     removeLecture(lectureCode) {
         const objWithIdIndex = this.lecturesState.findIndex((obj) => obj.info.id === lectureCode);
         if (objWithIdIndex > -1) {
