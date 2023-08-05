@@ -10,6 +10,7 @@ const socket = io.connect();
 export const ProfessorView = (props) => {
 
     const history = useHistory();
+    const location = useLocation();
     const binInterval = 5000; // interval of bins in millisecons 
 
     const {
@@ -27,6 +28,25 @@ export const ProfessorView = (props) => {
             setLectureCode(res);
         });
     });
+
+    function createNewLecture() {
+        var data = {
+            "professorId": user.id,
+        }
+        socket.emit('create_new_lecture', data);
+        history.push('/professor/in-lecture');
+    }
+
+    useEffect(() => {
+        zoomSdk.onCloudRecording((data) => {
+            if (data.action === "connecting" && location.pathname === "/professor/create-lecture") {
+                createNewLecture();
+            }
+            console.log("cloud data: ")
+            console.log(data);
+            console.log("location: " + location.pathname);
+        })
+    })
 
     function histogram(X, binRange, endTime) {
         //inclusive of the first number  
@@ -61,12 +81,9 @@ export const ProfessorView = (props) => {
     const createNewLecturePress = () => {
         // TODO: add a check if they're already in a lecture
         console.log("=========Create new lecture button pressed=========");
-        var data = {
-            "professorId": user.id,
-        }
-        socket.emit('create_new_lecture', data);
-        history.push('/professor/in-lecture');
+        createNewLecture();
     }
+
     function ButtonGraph() {
         if (graphData === null) {
             return <></>
@@ -114,7 +131,8 @@ export const ProfessorView = (props) => {
         <div className="professor-view-container">
             <Route path='/professor/create-lecture'>
                 <div>
-                    <Button onClick={createNewLecturePress}>Start a new lecture</Button>
+                    {/* <Button onClick={createNewLecturePress}>Start a new lecture</Button> */}
+                    <h2>Start a cloud recording</h2>
                 </div>
             </Route>
             <Route path='/professor/in-lecture'>

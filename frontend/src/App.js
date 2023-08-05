@@ -42,6 +42,7 @@ function App() {
             "onShareApp",
             "onActiveSpeakerChange",
             "onMeeting",
+            "onCloudRecording",
 
             // connect api and event
             "connect",
