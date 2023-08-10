@@ -39,6 +39,7 @@ export const ProfessorView = (props) => {
     function createNewLecture() {
         var data = {
             "professorId": user.id,
+            "meetingUUID": meetingUUID,
         }
         socket.emit('create_new_lecture', data, (lectureId) => {
             setLectureCode(lectureId);

@@ -124,11 +124,12 @@ io.on('connection', (socket) => {
 
 // Create connection to db
 // ! {force: true} for development purposes only
+// ! {alter: true} for development purposes only
 db.sequelize.sync({ alter: true }).then(async () => {
   console.log("Sync'd successfully.");
   // ! TEST DATA
   const lecture_controller = require("./api/postgres/controllers/lecture-controller");
-  const ret = await lecture_controller.createLecture({ professorId: 'test' });
+  const ret = await lecture_controller.createLecture({ professorId: 'test', meetingUUID: 'test' });
   lectureStore.addLecture(ret.dataValues);
 }).catch((error) => {
   console.error("Unable to sync : ", error);
