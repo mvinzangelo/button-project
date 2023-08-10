@@ -24,7 +24,9 @@ export const ProfessorView = (props) => {
     const [recordingStatus, setRecordingStatus] = useState('Not Recording');
     const [lectureCode, setLectureCode] = useState('');
     const lectureCodeRef = useRef('');
+    const locationRef = useRef('');
     lectureCodeRef.current = lectureCode;
+    locationRef.current = location;
 
     useEffect(() => {
         socket.on('return_lecture_id', (res) => {
@@ -57,6 +59,8 @@ export const ProfessorView = (props) => {
             // set the data to be an array of objects 
             const graph = convertHistData(hist, binInterval);
             setGraphData(graph);
+            console.log("Graph data: ");
+            console.log(graphData);
 
             console.log("histogram : ", hist);
         });
@@ -71,6 +75,7 @@ export const ProfessorView = (props) => {
         else if (event === 'started' && !lectureCodeRef.current) {
             console.log("CREATED NEW LECTURE");
             createNewLecture();
+            history.push('/professor/in-lecture');
             setRecordingStatus('Recording');
         }
         else if (event === 'started' && lectureCodeRef.current) {
@@ -86,6 +91,7 @@ export const ProfessorView = (props) => {
         else if (event === 'stopped' && lectureCodeRef.current) {
             console.log("STOPPED");
             endCurrentLecture();
+            history.push('/professor/lecture-data');
             setRecordingStatus('Not Recording');
         }
         else {
@@ -162,28 +168,29 @@ export const ProfessorView = (props) => {
         endCurrentLecture();
     }
     return (
-        // <div className="professor-view-container">
-        //     <Route path='/professor/create-lecture'>
-        //         <div>
-        //             {/* <Button onClick={createNewLecturePress}>Start a new lecture</Button> */}
-        //             <h2>Start a cloud recording</h2>
-        //         </div>
-        //     </Route>
-        //     <Route path='/professor/in-lecture'>
-        //         <h2>Current lecture code: {lectureCode ? lectureCode : "n/a"}</h2>
-        //         <div>
-        //             {/* <Button onClick={endCurrentLecturePress}>End current lecture</Button> */}
-        //         </div>
-        //     </Route>
-        //     <Route path='/professor/lecture-data'>
-        //         <h1 class="text-center">Lecture {lectureData ? lectureData.createdAt.slice(0, 10) : "null"}</h1>
-        //         <ButtonGraph />
-        //         <Button onClick={exitDataView}>Exit</Button>
-        //     </Route>
-        // </div>
         <div className="professor-view-container">
-            <h2>Recording status: {recordingStatus}</h2>
+            <Route path='/professor/create-lecture'>
+                <div>
+                    {/* <Button onClick={createNewLecturePress}>Start a new lecture</Button> */}
+                    <h2>Start a cloud recording</h2>
+                </div>
+            </Route>
+            <Route path='/professor/in-lecture'>
+                <h2>Current lecture code: {lectureCodeRef.current ? lectureCodeRef.current : "n/a"}</h2>
+                <h2>Recording status: {recordingStatus}</h2>
+                <div>
+                    {/* <Button onClick={endCurrentLecturePress}>End current lecture</Button> */}
+                </div>
+            </Route>
+            <Route path='/professor/lecture-data'>
+                <h1 class="text-center">Lecture {lectureData ? lectureData.createdAt.slice(0, 10) : "null"}</h1>
+                <ButtonGraph />
+                <Button onClick={exitDataView}>Exit</Button>
+            </Route>
         </div>
+        // <div className="professor-view-container">
+        //     <h2>Recording status: {recordingStatus}</h2>
+        // </div>
 
     )
 }
