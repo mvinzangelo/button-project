@@ -1,6 +1,6 @@
 /* globals zoomSdk */
 import { useLocation, useHistory, Route, Redirect } from "react-router-dom";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 import { apis } from "./apis";
 import { Authorization } from "./components/Authorization";
 import ApiScrollview from "./components/ApiScrollview";
@@ -16,11 +16,14 @@ function App() {
   const location = useLocation();
   const [error, setError] = useState(null);
   const [user, setUser] = useState(null);
+  const [meetingUUID, setMeetingUUID] = useState('');
   const [runningContext, setRunningContext] = useState(null);
   const [connected, setConnected] = useState(false);
   const [counter, setCounter] = useState(0);
   const [preMeeting, setPreMeeting] = useState(true); // start with pre-meeting code
   const [userContextStatus, setUserContextStatus] = useState("");
+  const meetingUUIDRef = useRef('');
+  meetingUUIDRef.current = meetingUUID;
 
   useEffect(() => {
     async function configureSdk() {
@@ -43,6 +46,7 @@ function App() {
             "onActiveSpeakerChange",
             "onMeeting",
             "onCloudRecording",
+            "getMeetingUUID",
 
             // connect api and event
             "connect",
@@ -70,6 +74,9 @@ function App() {
         });
         zoomSdk.onShareApp((data) => {
           console.log(data);
+        });
+        zoomSdk.getMeetingUUID().then((data) => {
+          setMeetingUUID(data.meetingUUID);
         });
       } catch (error) {
         console.log(error);
@@ -213,7 +220,11 @@ function App() {
       </Route>
       <Route path="/professor">
         <h1>Professor</h1>
-        <ProfessorView user={user} history={history} location={location} />
+        <ProfessorView user={user}
+          history={history}
+          location={location}
+          meetingUUID={meetingUUIDRef.current}
+        />
       </Route>
       <Route path="/student">
         <h1>Student</h1>

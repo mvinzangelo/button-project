@@ -15,7 +15,8 @@ export const ProfessorView = (props) => {
     const {
         user,
         history,
-        location
+        location,
+        meetingUUID
     } = props
 
     const [lecturePresses, setLecturePresses] = useState([]);
