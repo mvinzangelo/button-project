@@ -28,6 +28,24 @@ module.exports = (io, socket, lectures) => {
             });
     }
 
+    const onPauseCurrentLecture = (data) => {
+        console.log("LECTURE PAUSED");
+        lectures.pauseTime(data);
+        console.log("------------lectureStore state------------\n", lectures.lecturesState);
+        console.log(lectures.lecturesState);
+        // console.log("room: " + data + " | stopped time: " + lectures.pauseTime(data));
+    }
+
+    const onResumeCurrentLecture = (data) => {
+        console.log("LECTURE RESUMED");
+        lectures.resumeTime(data);
+        console.log("------------lectureStore state------------\n", lectures.lecturesState);
+        console.log(lectures.lecturesState);
+        // console.log("room: " + data + " | resume time: " + lectures.getTime(data));
+    }
+
     socket.on("create_new_lecture", onCreateNewLecture);
     socket.on("end_current_lecture", onEndCurrentLecture);
+    socket.on("pause_current_lecture", onPauseCurrentLecture);
+    socket.on("resume_current_lecture", onResumeCurrentLecture);
 }

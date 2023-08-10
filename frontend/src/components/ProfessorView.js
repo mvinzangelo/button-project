@@ -1,26 +1,30 @@
-import { React, useState, useEffect } from 'react';
+import { React, useState, useEffect, useRef } from 'react';
 import { Route, Redirect, useLocation, useHistory } from "react-router-dom";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import Button from "react-bootstrap/Button";
 import io from 'socket.io-client'
 import "./ProfessorView.css";
+import { create } from 'lodash';
 
 const socket = io.connect();
 
 export const ProfessorView = (props) => {
 
-    const history = useHistory();
-    const location = useLocation();
     const binInterval = 5000; // interval of bins in millisecons 
 
     const {
-        user
+        user,
+        history,
+        location
     } = props
 
-    const [lectureCode, setLectureCode] = useState('');
     const [lecturePresses, setLecturePresses] = useState([]);
     const [graphData, setGraphData] = useState(null);
     const [lectureData, setLectureData] = useState(null);
+    const [recordingStatus, setRecordingStatus] = useState('Not Recording');
+    const [lectureCode, setLectureCode] = useState('');
+    const lectureCodeRef = useRef('');
+    lectureCodeRef.current = lectureCode;
 
     useEffect(() => {
         socket.on('return_lecture_id', (res) => {
@@ -35,12 +39,11 @@ export const ProfessorView = (props) => {
         }
         socket.emit('create_new_lecture', data, (lectureId) => {
             setLectureCode(lectureId);
-            history.push('/professor/in-lecture');
         });
     }
 
     function endCurrentLecture() {
-        socket.emit('end_current_lecture', lectureCode, (lecture, presses, endTime) => {
+        socket.emit('end_current_lecture', lectureCodeRef.current, (lecture, presses, endTime) => {
             for (let i = 0; i < presses.length; i++) {
                 console.log(presses[i].time);
                 setLecturePresses(lecturePresses.push(presses[i].time));
@@ -56,29 +59,45 @@ export const ProfessorView = (props) => {
             setGraphData(graph);
 
             console.log("histogram : ", hist);
-            history.push('/professor/lecture-data');
         });
+    }
+
+    function handleCloudRecordingEvent(event) {
+        console.log(event);
+        if (event === 'connecting' && !lectureCodeRef.current) {
+            console.log("CONNECTING");
+            setRecordingStatus('Connecting');
+        }
+        else if (event === 'started' && !lectureCodeRef.current) {
+            console.log("CREATED NEW LECTURE");
+            createNewLecture();
+            setRecordingStatus('Recording');
+        }
+        else if (event === 'started' && lectureCodeRef.current) {
+            console.log("RESUMED");
+            socket.emit("resume_current_lecture", lectureCodeRef.current);
+            setRecordingStatus('Recording');
+        }
+        else if (event === 'paused' && lectureCodeRef.current) {
+            console.log("PAUSED");
+            socket.emit("pause_current_lecture", lectureCodeRef.current);
+            setRecordingStatus('Paused');
+        }
+        else if (event === 'stopped' && lectureCodeRef.current) {
+            console.log("STOPPED");
+            endCurrentLecture();
+            setRecordingStatus('Not Recording');
+        }
+        else {
+            console.log("NOTHING");
+        }
     }
 
     useEffect(() => {
         zoomSdk.onCloudRecording((data) => {
-            if (data.action === "connecting" && location.pathname === "/professor/create-lecture") {
-                createNewLecture();
-            }
-            else if (data.action === "paused" && location.pathname === "/professor/in-lecture") {
-                // TODO: emit pause event
-            }
-            else if (data.action === "started" && location.pathname === "/professor/in-lecture") {
-                // TODO: emit resume event
-            }
-            else if (data.action === "stopped" && location.pathname === "/professor/in-lecture") {
-                endCurrentLecture();
-            }
-            console.log("cloud data: ")
-            console.log(data);
-            console.log("location: " + location.pathname);
+            handleCloudRecordingEvent(data.action);
         })
-    })
+    }, [])
 
     function histogram(X, binRange, endTime) {
         //inclusive of the first number  
@@ -143,24 +162,28 @@ export const ProfessorView = (props) => {
         endCurrentLecture();
     }
     return (
+        // <div className="professor-view-container">
+        //     <Route path='/professor/create-lecture'>
+        //         <div>
+        //             {/* <Button onClick={createNewLecturePress}>Start a new lecture</Button> */}
+        //             <h2>Start a cloud recording</h2>
+        //         </div>
+        //     </Route>
+        //     <Route path='/professor/in-lecture'>
+        //         <h2>Current lecture code: {lectureCode ? lectureCode : "n/a"}</h2>
+        //         <div>
+        //             {/* <Button onClick={endCurrentLecturePress}>End current lecture</Button> */}
+        //         </div>
+        //     </Route>
+        //     <Route path='/professor/lecture-data'>
+        //         <h1 class="text-center">Lecture {lectureData ? lectureData.createdAt.slice(0, 10) : "null"}</h1>
+        //         <ButtonGraph />
+        //         <Button onClick={exitDataView}>Exit</Button>
+        //     </Route>
+        // </div>
         <div className="professor-view-container">
-            <Route path='/professor/create-lecture'>
-                <div>
-                    {/* <Button onClick={createNewLecturePress}>Start a new lecture</Button> */}
-                    <h2>Start a cloud recording</h2>
-                </div>
-            </Route>
-            <Route path='/professor/in-lecture'>
-                <h2>Current lecture code: {lectureCode ? lectureCode : "n/a"}</h2>
-                <div>
-                    {/* <Button onClick={endCurrentLecturePress}>End current lecture</Button> */}
-                </div>
-            </Route>
-            <Route path='/professor/lecture-data'>
-                <h1 class="text-center">Lecture {lectureData ? lectureData.createdAt.slice(0, 10) : "null"}</h1>
-                <ButtonGraph />
-                <Button onClick={exitDataView}>Exit</Button>
-            </Route>
+            <h2>Recording status: {recordingStatus}</h2>
         </div>
+
     )
 }

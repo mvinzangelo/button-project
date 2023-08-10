@@ -38,7 +38,7 @@ class Lecture {
         }
         return 0;
     }
-    startTime(lectureCode) {
+    resumeTime(lectureCode) {
         for (let i = 0; i < this.lecturesState.length; i++) {
             if (this.lecturesState[i].info.id === lectureCode) {
                 return this.lecturesState[i].time.start();

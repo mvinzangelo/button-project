@@ -213,7 +213,7 @@ function App() {
       </Route>
       <Route path="/professor">
         <h1>Professor</h1>
-        <ProfessorView user={user} />
+        <ProfessorView user={user} history={history} location={location} />
       </Route>
       <Route path="/student">
         <h1>Student</h1>
