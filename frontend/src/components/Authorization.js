@@ -14,14 +14,13 @@ const socket = io.connect();
 
 export const Authorization = (props) => {
 
-  const history = useHistory();
-
   const {
     handleError,
     handleUser,
     handleUserContextStatus,
     user,
     userContextStatus,
+    history
   } = props;
   const location = useLocation();
   const [userAuthorized, setUserAuthorized] = useState(null);
@@ -130,8 +129,16 @@ export const Authorization = (props) => {
         const res = await socket.emit("create_user", user, (response) => {
           user.role = response[0].role
           handleUser(user);
+          if (user.role === 'student') {
+            history.push('/student/enter-code');
+          }
+          else if (user.role === 'professor') {
+            history.push('/professor/create-lecture');
+          }
+          else {
+            console.log("NO ROLE FOUND");
+          }
         });
-        // socket.emit('get_user_role', user.id);
         setShowInClientOAuthPrompt(false);
       } catch (error) {
         console.error(error);
