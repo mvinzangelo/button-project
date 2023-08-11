@@ -97,7 +97,7 @@ export const StudentView = (props) => {
                     <Button disabled={isButtonDisabled} onClick={confusionButtonPress}>Press me if you're confused</Button>
                 </div>
                 {isTextVisible && <div className="response-text-container">
-                    <small class={textClass}>{buttonResponseText}</small>
+                    <small className={textClass}>{buttonResponseText}</small>
                 </div>}
                 <div>
                     <Button onClick={leaveLectureButtonPress}>Leave lecture</Button>

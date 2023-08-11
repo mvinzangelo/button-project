@@ -186,7 +186,7 @@ export const ProfessorView = (props) => {
                 </div>
             </Route>
             <Route path='/professor/lecture-data'>
-                <h1 class="text-center">Lecture {lectureData ? lectureData.createdAt.slice(0, 10) : "null"}</h1>
+                <h1 className="text-center">Lecture {lectureData ? lectureData.createdAt.slice(0, 10) : "null"}</h1>
                 <ButtonGraph />
                 <Button onClick={exitDataView}>Exit</Button>
             </Route>
