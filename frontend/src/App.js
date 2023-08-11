@@ -75,9 +75,6 @@ function App() {
         zoomSdk.onShareApp((data) => {
           console.log(data);
         });
-        zoomSdk.getMeetingUUID().then((data) => {
-          setMeetingUUID(data.meetingUUID);
-        });
       } catch (error) {
         console.log(error);
         setError("There was an error configuring the JS SDK");
@@ -143,6 +140,9 @@ function App() {
       // only can call connect when in-meeting
       if (runningContext === "inMeeting") {
         zoomSdk.addEventListener("onConnect", (event) => {
+          zoomSdk.getMeetingUUID().then((data) => {
+            setMeetingUUID(data.meetingUUID);
+          });
           console.log("Connected");
           setConnected(true);
 
