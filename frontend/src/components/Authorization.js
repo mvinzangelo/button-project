@@ -27,6 +27,18 @@ export const Authorization = (props) => {
   const [showInClientOAuthPrompt, setShowInClientOAuthPrompt] = useState(false);
   const [inGuestMode, setInGuestMode] = useState(false);
 
+  function roleNavigate(role) {
+    if (role === 'student') {
+      history.push('/student/enter-code');
+    }
+    else if (role === 'professor') {
+      history.push('/professor/create-lecture');
+    }
+    else {
+      console.log("NO ROLE FOUND");
+    }
+  }
+
   const promptAuthorize = async () => {
     try {
       const promptAuthResponse = await zoomSdk.promptAuthorize();
@@ -129,15 +141,7 @@ export const Authorization = (props) => {
         const res = await socket.emit("create_user", user, (response) => {
           user.role = response[0].role
           handleUser(user);
-          if (user.role === 'student') {
-            history.push('/student/enter-code');
-          }
-          else if (user.role === 'professor') {
-            history.push('/professor/create-lecture');
-          }
-          else {
-            console.log("NO ROLE FOUND");
-          }
+          roleNavigate(user.role);
         });
         setShowInClientOAuthPrompt(false);
       } catch (error) {
