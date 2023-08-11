@@ -29,13 +29,6 @@ export const ProfessorView = (props) => {
     lectureCodeRef.current = lectureCode;
     locationRef.current = location;
 
-    useEffect(() => {
-        socket.on('return_lecture_id', (res) => {
-            console.log("RES LECTURE ID: ", res);
-            setLectureCode(res);
-        });
-    });
-
     function createNewLecture() {
         var data = {
             "professorId": user.id,
