@@ -140,6 +140,7 @@ function App() {
       // only can call connect when in-meeting
       if (runningContext === "inMeeting") {
         zoomSdk.addEventListener("onConnect", (event) => {
+          // get UUID
           zoomSdk.getMeetingUUID().then((data) => {
             setMeetingUUID(data.meetingUUID);
           });
@@ -209,6 +210,7 @@ function App() {
 
       <Route path="/authorize">
         <Authorization
+          history={history}
           handleError={setError}
           handleUserContextStatus={setUserContextStatus}
           handleUser={setUser}
