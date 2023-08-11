@@ -1,5 +1,5 @@
-import { React, useEffect, useState } from 'react';
-import { Route, Redirect, useLocation, useHistory } from "react-router-dom";
+import { React, useEffect, useState, useRef } from 'react';
+import { Route } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Form from 'react-bootstrap/Form';
 import io from 'socket.io-client'
@@ -9,10 +9,12 @@ const socket = io.connect();
 
 export const StudentView = (props) => {
 
-    const history = useHistory();
 
     const {
-        user
+        user,
+        history,
+        location,
+        meetingUUID
     } = props
 
     const [lectureCode, setLectureCode] = useState('');
@@ -77,7 +79,7 @@ export const StudentView = (props) => {
     return (
         <div className="student-view-container">
             <Route path='/student/enter-code' exact>
-                <Form>
+                {/* <Form>
                     <Form.Group className="mb-3" controlId="fromRoomCode">
                         <Form.Label>Room code</Form.Label>
                         <Form.Control placeholder="Enter room code"
@@ -87,7 +89,8 @@ export const StudentView = (props) => {
                         />
                         <Button onClick={joinLectureButtonPress}>Join lecture</Button>
                     </Form.Group>
-                </Form>
+                </Form> */}
+                <h2>Waiting for a cloud recording to start</h2>
             </Route>
             <Route path='/student/in-lecture' exact>
                 <div className="confusion-button-container">

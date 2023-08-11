@@ -1,5 +1,5 @@
 import { React, useState, useEffect, useRef } from 'react';
-import { Route, Redirect, useLocation, useHistory } from "react-router-dom";
+import { Route } from "react-router-dom";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import Button from "react-bootstrap/Button";
 import io from 'socket.io-client'

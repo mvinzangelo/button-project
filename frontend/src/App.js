@@ -220,7 +220,8 @@ function App() {
       </Route>
       <Route path="/professor">
         <h1>Professor</h1>
-        <ProfessorView user={user}
+        <ProfessorView
+          user={user}
           history={history}
           location={location}
           meetingUUID={meetingUUIDRef.current}
@@ -228,7 +229,12 @@ function App() {
       </Route>
       <Route path="/student">
         <h1>Student</h1>
-        <StudentView user={user} />
+        <StudentView
+          user={user}
+          history={history}
+          location={location}
+          meetingUUID={meetingUUIDRef.current}
+        />
       </Route>
       {/* <h1>Hello{user ? ` ${user.first_name} ${user.last_name}` : " Zoom Apps user"}!</h1> */}
       {/* <p>{`User Context Status: ${userContextStatus}`}</p>
