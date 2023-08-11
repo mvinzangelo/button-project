@@ -116,13 +116,6 @@ export const Authorization = (props) => {
   }, [handleError]);
 
   useEffect(() => {
-    socket.on('return_user_role', (role) => {
-      console.log("RESPONSE ROLE: ", role);
-      setUserRole(role);
-    })
-  })
-
-  useEffect(() => {
     zoomSdk.addEventListener("onMyUserContextChange", (event) => {
       handleUserContextStatus(event.status);
     });
