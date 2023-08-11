@@ -52,6 +52,7 @@ export const ProfessorView = (props) => {
                 console.log(presses[i].time);
                 setLecturePresses(lecturePresses.push(presses[i].time));
             }
+            setLectureCode('');
             console.log("lecture data: ", lecture[1]);
             setLectureData(lecture[1]);
             // console.log(lecturePresses);
