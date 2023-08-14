@@ -24,6 +24,8 @@ function App() {
   const [userContextStatus, setUserContextStatus] = useState("");
   const meetingUUIDRef = useRef('');
   meetingUUIDRef.current = meetingUUID;
+  const userRef = useRef(null);
+  userRef.current = user;
 
   useEffect(() => {
     async function configureSdk() {
@@ -214,7 +216,7 @@ function App() {
           handleError={setError}
           handleUserContextStatus={setUserContextStatus}
           handleUser={setUser}
-          user={user}
+          user={userRef.current}
           userContextStatus={userContextStatus}
         />
         {/* <Button>Set role "student"</Button>
@@ -223,7 +225,7 @@ function App() {
       <Route path="/professor">
         <h1>Professor</h1>
         <ProfessorView
-          user={user}
+          user={userRef.current}
           history={history}
           location={location}
           meetingUUID={meetingUUIDRef.current}
@@ -232,7 +234,7 @@ function App() {
       <Route path="/student">
         <h1>Student</h1>
         <StudentView
-          user={user}
+          user={userRef.current}
           history={history}
           location={location}
           meetingUUID={meetingUUIDRef.current}

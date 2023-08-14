@@ -141,7 +141,9 @@ export const Authorization = (props) => {
         const res = await socket.emit("create_user", user, (response) => {
           user.role = response[0].role
           handleUser(user);
-          roleNavigate(user.role);
+          if (user) {
+            roleNavigate(user.role);
+          }
         });
         setShowInClientOAuthPrompt(false);
       } catch (error) {
