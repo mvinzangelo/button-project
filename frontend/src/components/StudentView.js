@@ -75,6 +75,15 @@ export const StudentView = (props) => {
         }
         else if (event === 'stopped' && lectureCodeRef.current) {
             console.log("STOPPED");
+            if (user.id !== '') {
+                let studentId = user.id;
+                socket.emit('leave_lecture', studentId);
+                setLectureCode('');
+                history.push("/student/enter-code");
+            }
+            else {
+                console.error("No user.");
+            }
         }
         else {
             console.log("NOTHING");
