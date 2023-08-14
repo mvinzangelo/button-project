@@ -22,8 +22,10 @@ export const StudentView = (props) => {
     const [textClass, setTextClass] = useState("text-primary");
     const [isTextVisible, setIsTextVisible] = useState(false);
     const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+    const [connectionStatus, setConnectionStatus] = useState('');
 
     useEffect(() => {
+        setConnectionStatus('Looking for a room');
         var data = {
             "studentId": user.id,
             "meetingUUID": meetingUUID,
@@ -34,6 +36,7 @@ export const StudentView = (props) => {
             }
             else {
                 console.log("NO ROOM FOUND");
+                setConnectionStatus('No room found, waiting for cloud recording to start');
             }
         })
     }, [])
@@ -105,7 +108,7 @@ export const StudentView = (props) => {
                         <Button onClick={joinLectureButtonPress}>Join lecture</Button>
                     </Form.Group>
                 </Form> */}
-                <h2>Waiting for a cloud recording to start</h2>
+                <h2>{connectionStatus}</h2>
             </Route>
             <Route path='/student/in-lecture' exact>
                 <div className="confusion-button-container">
