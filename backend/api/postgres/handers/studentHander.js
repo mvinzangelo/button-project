@@ -49,8 +49,30 @@ module.exports = (io, socket, lectures) => {
         socket.leave(data)
     }
 
+    const onCheckExistingLecture = (data, callback) => {
+        const { studentId, meetingUUID } = data;
+        const lectureId = lectures.checkLectureUUID(meetingUUID);
+        if (lectureId) {
+            // join lecture
+            console.log(`${studentId} has joined lecture ${lectureId}`);
+            lectures.joinLecture(lectureId, studentId);
+            socket.join(lectureId);
+            user_controller.addLectureId(studentId, lectureId);
+            console.log(socket.rooms);
+            // use callback to return true
+            callback(true)
+            return 0;
+        }
+        else {
+            // use callback to return false
+            callback(false)
+            return 1;
+        }
+    }
+
     socket.on("button_press", onConfusionButtonPress);
     socket.on("join_lecture", onJoinLecturePress);
     socket.on("lecture_ended", onLectureEnded);
     socket.on("leave_lecture", onLeaveLecturePress);
+    socket.on("check_existing_lecture", onCheckExistingLecture);
 }

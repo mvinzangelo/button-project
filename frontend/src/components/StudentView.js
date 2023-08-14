@@ -23,6 +23,21 @@ export const StudentView = (props) => {
     const [isTextVisible, setIsTextVisible] = useState(false);
     const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
+    useEffect(() => {
+        var data = {
+            "studentId": user.id,
+            "meetingUUID": meetingUUID,
+        }
+        socket.emit('check_existing_lecture', data, (res) => {
+            if (res) {
+                console.log("FOUND ROOM");
+            }
+            else {
+                console.log("NO ROOM FOUND");
+            }
+        })
+    }, [])
+
     const joinLectureButtonPress = () => {
         if (lectureCode !== '' && user.id !== '') {
             let studentId = user.id;
