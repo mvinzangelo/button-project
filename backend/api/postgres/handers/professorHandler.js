@@ -11,6 +11,8 @@ module.exports = (io, socket, lectures) => {
                 lectures.addLecture(ret.dataValues);
                 console.log("------------lectureStore state------------\n", lectures.lecturesState);
                 callback(ret.dataValues.id);
+                // emit event to people in meeting that a recording was started
+                io.to(ret.dataValues.meetingUUID).emit("new_lecture_started", ret.dataValues.id);
             });
     }
 

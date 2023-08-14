@@ -22,7 +22,7 @@ module.exports = (io, socket, lectures) => {
             console.error("Error creating button press: lecutre is not active");
         }
     }
-    const onJoinLecturePress = (data) => {
+    const onJoinLecture = (data) => {
         const { studentId, code } = data;
         // TODO: Check if the user is already in a lecture
         if (lectures.isLectureActive(code)) {
@@ -67,7 +67,7 @@ module.exports = (io, socket, lectures) => {
     }
 
     socket.on("button_press", onConfusionButtonPress);
-    socket.on("join_lecture", onJoinLecturePress);
+    socket.on("join_lecture", onJoinLecture);
     socket.on("lecture_ended", onLectureEnded);
     socket.on("leave_lecture", onLeaveLecturePress);
     socket.on("check_existing_lecture", onCheckExistingLecture);

@@ -8,6 +8,7 @@ import "./StudentView.css";
 
 export const StudentView = (props) => {
 
+    const buttonTimeout = 2000; // button is disabled for 2 seconds
 
     const {
         user,
@@ -41,8 +42,14 @@ export const StudentView = (props) => {
                 setConnectionStatus('No room found, waiting for cloud recording to start');
             }
         })
-        socket.on('lecture_created', (data) => {
-
+        socket.on('new_lecture_started', (data) => {
+            if (user) {
+                // to match the schema of the "join_lecture" event
+                let code = data;
+                socket.emit('join_lecture', { studentId, code });
+                setLectureCode(data);
+                history.push("/student/in-lecture");
+            }
         })
     }, [])
 
@@ -55,9 +62,15 @@ export const StudentView = (props) => {
             console.log("CREATED NEW LECTURE");
         }
         else if (event === 'started' && lectureCodeRef.current) {
+            setIsTextVisible(false);
+            setIsButtonDisabled(false);
             console.log("RESUMED");
         }
         else if (event === 'paused' && lectureCodeRef.current) {
+            setIsTextVisible(true);
+            setIsButtonDisabled(true);
+            setbuttonResponseText("Recording is paused.");
+            setTextClass("text-warning");
             console.log("PAUSED");
         }
         else if (event === 'stopped' && lectureCodeRef.current) {
@@ -112,7 +125,7 @@ export const StudentView = (props) => {
         setTimeout(() => {
             setIsTextVisible(false);
             setIsButtonDisabled(false);
-        }, 2000);
+        }, buttonTimeout);
     }
 
     const confusionButtonPress = async () => {
