@@ -23,6 +23,8 @@ export const StudentView = (props) => {
     const [isTextVisible, setIsTextVisible] = useState(false);
     const [isButtonDisabled, setIsButtonDisabled] = useState(false);
     const [connectionStatus, setConnectionStatus] = useState('');
+    const lectureCodeRef = useRef('');
+    lectureCodeRef.current = lectureCode;
 
     useEffect(() => {
         setConnectionStatus('Looking for a room');
@@ -40,6 +42,34 @@ export const StudentView = (props) => {
             }
         })
     }, [])
+
+    function handleCloudRecordingEvent(event) {
+        console.log(event);
+        if (event === 'connecting' && !lectureCodeRef.current) {
+            console.log("CONNECTING");
+        }
+        else if (event === 'started' && !lectureCodeRef.current) {
+            console.log("CREATED NEW LECTURE");
+        }
+        else if (event === 'started' && lectureCodeRef.current) {
+            console.log("RESUMED");
+        }
+        else if (event === 'paused' && lectureCodeRef.current) {
+            console.log("PAUSED");
+        }
+        else if (event === 'stopped' && lectureCodeRef.current) {
+            console.log("STOPPED");
+        }
+        else {
+            console.log("NOTHING");
+        }
+    }
+
+    useEffect(() => {
+        zoomSdk.onCloudRecording((data) => {
+            handleCloudRecordingEvent(data.action);
+        })
+    }, [user])
 
     const joinLectureButtonPress = () => {
         if (lectureCode !== '' && user.id !== '') {
