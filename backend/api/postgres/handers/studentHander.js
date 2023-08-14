@@ -29,7 +29,6 @@ module.exports = (io, socket, lectures) => {
             console.log(`${studentId} has joined lecture ${code}`);
             lectures.joinLecture(code, studentId);
             user_controller.addLectureId(studentId, code);
-            console.log(socket.rooms);
         }
         else {
             console.error("Error joining lecture: not an active lecture.");
@@ -40,7 +39,6 @@ module.exports = (io, socket, lectures) => {
         user_controller.removeLectureId(data);
         console.log(`${data} has left lefture ${currentUser.dataValues.lectureId}`);
         const foo = await socket.leave(currentUser.dataValues.lectureId);
-        console.log(socket.rooms);
     }
     const onLectureEnded = (data) => {
         console.log("left lecture: ", data);

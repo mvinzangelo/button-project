@@ -6,10 +6,13 @@ import { Authorization } from "./components/Authorization";
 import ApiScrollview from "./components/ApiScrollview";
 import { StudentView } from "./components/StudentView";
 import { ProfessorView } from "./components/ProfessorView";
+import io from 'socket.io-client'
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 let once = 0; // to prevent increasing number of event listeners being added
+
+const socket = io.connect();
 
 function App() {
   const history = useHistory();
@@ -144,7 +147,9 @@ function App() {
         zoomSdk.addEventListener("onConnect", (event) => {
           // get UUID
           zoomSdk.getMeetingUUID().then((data) => {
+            console.log(data.meetingUUID);
             setMeetingUUID(data.meetingUUID);
+            socket.emit("joined_meeting", data.meetingUUID);
           });
           console.log("Connected");
           setConnected(true);

@@ -8,5 +8,12 @@ module.exports = (io, socket, lectures) => {
         })
     }
 
-    socket.on("create_user", onfindOrCreateUser)
+    const onJoinedMeeting = (data) => {
+        socket.join(data);
+        console.log("==========JOINED ROOMS: ");
+        console.log(socket.rooms);
+    }
+
+    socket.on("create_user", onfindOrCreateUser);
+    socket.on("joined_meeting", onJoinedMeeting);
 }
