@@ -96,7 +96,6 @@ export const ProfessorView = (props) => {
     }
 
     useEffect(() => {
-        console.log(user.id);
         zoomSdk.onCloudRecording((data) => {
             handleCloudRecordingEvent(data.action);
         })
