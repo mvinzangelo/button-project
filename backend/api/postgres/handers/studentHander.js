@@ -28,7 +28,6 @@ module.exports = (io, socket, lectures) => {
         if (lectures.isLectureActive(code)) {
             console.log(`${studentId} has joined lecture ${code}`);
             lectures.joinLecture(code, studentId);
-            socket.join(code);
             user_controller.addLectureId(studentId, code);
             console.log(socket.rooms);
         }
@@ -56,7 +55,6 @@ module.exports = (io, socket, lectures) => {
             // join lecture
             console.log(`${studentId} has joined lecture ${lectureId}`);
             lectures.joinLecture(lectureId, studentId);
-            socket.join(lectureId);
             user_controller.addLectureId(studentId, lectureId);
             console.log(socket.rooms);
             // use callback to return true
