@@ -96,10 +96,11 @@ export const ProfessorView = (props) => {
     }
 
     useEffect(() => {
+        console.log(user.id);
         zoomSdk.onCloudRecording((data) => {
             handleCloudRecordingEvent(data.action);
         })
-    }, [])
+    }, [user])
 
     function histogram(X, binRange, endTime) {
         //inclusive of the first number  
