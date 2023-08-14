@@ -5,7 +5,6 @@ import Form from 'react-bootstrap/Form';
 import io from 'socket.io-client'
 import "./StudentView.css";
 
-const socket = io.connect();
 
 export const StudentView = (props) => {
 
@@ -14,7 +13,8 @@ export const StudentView = (props) => {
         user,
         history,
         location,
-        meetingUUID
+        meetingUUID,
+        socket
     } = props
 
     const [lectureCode, setLectureCode] = useState('');
@@ -40,6 +40,9 @@ export const StudentView = (props) => {
                 console.log("NO ROOM FOUND");
                 setConnectionStatus('No room found, waiting for cloud recording to start');
             }
+        })
+        socket.on('lecture_created', (data) => {
+
         })
     }, [])
 

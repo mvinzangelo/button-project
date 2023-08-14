@@ -6,7 +6,6 @@ import io from 'socket.io-client'
 import "./ProfessorView.css";
 import { create } from 'lodash';
 
-const socket = io.connect();
 
 export const ProfessorView = (props) => {
 
@@ -16,7 +15,8 @@ export const ProfessorView = (props) => {
         user,
         history,
         location,
-        meetingUUID
+        meetingUUID,
+        socket
     } = props
 
     const [lecturePresses, setLecturePresses] = useState([]);

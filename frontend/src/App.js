@@ -223,6 +223,7 @@ function App() {
           handleUser={setUser}
           user={userRef.current}
           userContextStatus={userContextStatus}
+          socket={socket}
         />
         {/* <Button>Set role "student"</Button>
         <Button>Set role "professor"</Button> */}
@@ -234,6 +235,7 @@ function App() {
           history={history}
           location={location}
           meetingUUID={meetingUUIDRef.current}
+          socket={socket}
         />
       </Route>
       <Route path="/student">
@@ -243,6 +245,7 @@ function App() {
           history={history}
           location={location}
           meetingUUID={meetingUUIDRef.current}
+          socket={socket}
         />
       </Route>
       {/* <h1>Hello{user ? ` ${user.first_name} ${user.last_name}` : " Zoom Apps user"}!</h1> */}

@@ -10,7 +10,6 @@ import UserInfo from "./UserInfo";
 import io from 'socket.io-client'
 import "./Authorization.css";
 
-const socket = io.connect();
 
 export const Authorization = (props) => {
 
@@ -20,7 +19,8 @@ export const Authorization = (props) => {
     handleUserContextStatus,
     user,
     userContextStatus,
-    history
+    history,
+    socket
   } = props;
   const location = useLocation();
   const [userAuthorized, setUserAuthorized] = useState(null);
