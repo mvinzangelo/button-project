@@ -10,11 +10,8 @@ import UserInfo from "./UserInfo";
 import io from 'socket.io-client'
 import "./Authorization.css";
 
-const socket = io.connect();
 
 export const Authorization = (props) => {
-
-  const history = useHistory();
 
   const {
     handleError,
@@ -22,11 +19,25 @@ export const Authorization = (props) => {
     handleUserContextStatus,
     user,
     userContextStatus,
+    history,
+    socket
   } = props;
   const location = useLocation();
   const [userAuthorized, setUserAuthorized] = useState(null);
   const [showInClientOAuthPrompt, setShowInClientOAuthPrompt] = useState(false);
   const [inGuestMode, setInGuestMode] = useState(false);
+
+  function roleNavigate(role) {
+    if (role === 'student') {
+      history.push('/student/enter-code');
+    }
+    else if (role === 'professor') {
+      history.push('/professor/create-lecture');
+    }
+    else {
+      console.log("NO ROLE FOUND");
+    }
+  }
 
   const promptAuthorize = async () => {
     try {
@@ -116,13 +127,6 @@ export const Authorization = (props) => {
   }, [handleError]);
 
   useEffect(() => {
-    socket.on('return_user_role', (role) => {
-      console.log("RESPONSE ROLE: ", role);
-      setUserRole(role);
-    })
-  })
-
-  useEffect(() => {
     zoomSdk.addEventListener("onMyUserContextChange", (event) => {
       handleUserContextStatus(event.status);
     });
@@ -137,8 +141,10 @@ export const Authorization = (props) => {
         const res = await socket.emit("create_user", user, (response) => {
           user.role = response[0].role
           handleUser(user);
+          if (user) {
+            roleNavigate(user.role);
+          }
         });
-        // socket.emit('get_user_role', user.id);
         setShowInClientOAuthPrompt(false);
       } catch (error) {
         console.error(error);

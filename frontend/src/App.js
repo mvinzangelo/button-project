@@ -1,26 +1,34 @@
 /* globals zoomSdk */
 import { useLocation, useHistory, Route, Redirect } from "react-router-dom";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 import { apis } from "./apis";
 import { Authorization } from "./components/Authorization";
 import ApiScrollview from "./components/ApiScrollview";
 import { StudentView } from "./components/StudentView";
 import { ProfessorView } from "./components/ProfessorView";
+import io from 'socket.io-client'
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 let once = 0; // to prevent increasing number of event listeners being added
+
+const socket = io.connect();
 
 function App() {
   const history = useHistory();
   const location = useLocation();
   const [error, setError] = useState(null);
   const [user, setUser] = useState(null);
+  const [meetingUUID, setMeetingUUID] = useState('');
   const [runningContext, setRunningContext] = useState(null);
   const [connected, setConnected] = useState(false);
   const [counter, setCounter] = useState(0);
   const [preMeeting, setPreMeeting] = useState(true); // start with pre-meeting code
   const [userContextStatus, setUserContextStatus] = useState("");
+  const meetingUUIDRef = useRef('');
+  meetingUUIDRef.current = meetingUUID;
+  const userRef = useRef(null);
+  userRef.current = user;
 
   useEffect(() => {
     async function configureSdk() {
@@ -42,6 +50,8 @@ function App() {
             "onShareApp",
             "onActiveSpeakerChange",
             "onMeeting",
+            "onCloudRecording",
+            "getMeetingUUID",
 
             // connect api and event
             "connect",
@@ -135,6 +145,12 @@ function App() {
       // only can call connect when in-meeting
       if (runningContext === "inMeeting") {
         zoomSdk.addEventListener("onConnect", (event) => {
+          // get UUID
+          zoomSdk.getMeetingUUID().then((data) => {
+            console.log(data.meetingUUID);
+            setMeetingUUID(data.meetingUUID);
+            socket.emit("joined_meeting", data.meetingUUID);
+          });
           console.log("Connected");
           setConnected(true);
 
@@ -201,22 +217,36 @@ function App() {
 
       <Route path="/authorize">
         <Authorization
+          history={history}
           handleError={setError}
           handleUserContextStatus={setUserContextStatus}
           handleUser={setUser}
-          user={user}
+          user={userRef.current}
           userContextStatus={userContextStatus}
+          socket={socket}
         />
         {/* <Button>Set role "student"</Button>
         <Button>Set role "professor"</Button> */}
       </Route>
       <Route path="/professor">
         <h1>Professor</h1>
-        <ProfessorView user={user} />
+        <ProfessorView
+          user={userRef.current}
+          history={history}
+          location={location}
+          meetingUUID={meetingUUIDRef.current}
+          socket={socket}
+        />
       </Route>
       <Route path="/student">
         <h1>Student</h1>
-        <StudentView user={user} />
+        <StudentView
+          user={userRef.current}
+          history={history}
+          location={location}
+          meetingUUID={meetingUUIDRef.current}
+          socket={socket}
+        />
       </Route>
       {/* <h1>Hello{user ? ` ${user.first_name} ${user.last_name}` : " Zoom Apps user"}!</h1> */}
       {/* <p>{`User Context Status: ${userContextStatus}`}</p>

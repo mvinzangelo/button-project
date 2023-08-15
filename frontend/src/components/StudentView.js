@@ -1,18 +1,21 @@
-import { React, useEffect, useState } from 'react';
-import { Route, Redirect, useLocation, useHistory } from "react-router-dom";
+import { React, useEffect, useState, useRef } from 'react';
+import { Route } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Form from 'react-bootstrap/Form';
 import io from 'socket.io-client'
 import "./StudentView.css";
 
-const socket = io.connect();
 
 export const StudentView = (props) => {
 
-    const history = useHistory();
+    const buttonTimeout = 2000; // button is disabled for 2 seconds
 
     const {
-        user
+        user,
+        history,
+        location,
+        meetingUUID,
+        socket
     } = props
 
     const [lectureCode, setLectureCode] = useState('');
@@ -20,6 +23,78 @@ export const StudentView = (props) => {
     const [textClass, setTextClass] = useState("text-primary");
     const [isTextVisible, setIsTextVisible] = useState(false);
     const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+    const [connectionStatus, setConnectionStatus] = useState('');
+    const lectureCodeRef = useRef('');
+    lectureCodeRef.current = lectureCode;
+
+    useEffect(() => {
+        setConnectionStatus('Looking for a room');
+        var data = {
+            "studentId": user.id,
+            "meetingUUID": meetingUUID,
+        }
+        socket.emit('check_existing_lecture', data, (res) => {
+            if (res) {
+                console.log("FOUND ROOM");
+            }
+            else {
+                console.log("NO ROOM FOUND");
+                setConnectionStatus('No room found, waiting for cloud recording to start');
+            }
+        })
+        socket.on('new_lecture_started', (data) => {
+            if (user) {
+                // to match the schema of the "join_lecture" event
+                let code = data;
+                socket.emit('join_lecture', { studentId, code });
+                setLectureCode(data);
+                history.push("/student/in-lecture");
+            }
+        })
+    }, [])
+
+    function handleCloudRecordingEvent(event) {
+        console.log(event);
+        if (event === 'connecting' && !lectureCodeRef.current) {
+            console.log("CONNECTING");
+        }
+        else if (event === 'started' && !lectureCodeRef.current) {
+            console.log("CREATED NEW LECTURE");
+        }
+        else if (event === 'started' && lectureCodeRef.current) {
+            setIsTextVisible(false);
+            setIsButtonDisabled(false);
+            console.log("RESUMED");
+        }
+        else if (event === 'paused' && lectureCodeRef.current) {
+            setIsTextVisible(true);
+            setIsButtonDisabled(true);
+            setbuttonResponseText("Recording is paused.");
+            setTextClass("text-warning");
+            console.log("PAUSED");
+        }
+        else if (event === 'stopped' && lectureCodeRef.current) {
+            console.log("STOPPED");
+            if (user.id !== '') {
+                let studentId = user.id;
+                socket.emit('leave_lecture', studentId);
+                setLectureCode('');
+                history.push("/student/enter-code");
+            }
+            else {
+                console.error("No user.");
+            }
+        }
+        else {
+            console.log("NOTHING");
+        }
+    }
+
+    useEffect(() => {
+        zoomSdk.onCloudRecording((data) => {
+            handleCloudRecordingEvent(data.action);
+        })
+    }, [user])
 
     const joinLectureButtonPress = () => {
         if (lectureCode !== '' && user.id !== '') {
@@ -59,7 +134,7 @@ export const StudentView = (props) => {
         setTimeout(() => {
             setIsTextVisible(false);
             setIsButtonDisabled(false);
-        }, 2000);
+        }, buttonTimeout);
     }
 
     const confusionButtonPress = async () => {
@@ -77,7 +152,7 @@ export const StudentView = (props) => {
     return (
         <div className="student-view-container">
             <Route path='/student/enter-code' exact>
-                <Form>
+                {/* <Form>
                     <Form.Group className="mb-3" controlId="fromRoomCode">
                         <Form.Label>Room code</Form.Label>
                         <Form.Control placeholder="Enter room code"
@@ -87,14 +162,15 @@ export const StudentView = (props) => {
                         />
                         <Button onClick={joinLectureButtonPress}>Join lecture</Button>
                     </Form.Group>
-                </Form>
+                </Form> */}
+                <h2>{connectionStatus}</h2>
             </Route>
             <Route path='/student/in-lecture' exact>
                 <div className="confusion-button-container">
                     <Button disabled={isButtonDisabled} onClick={confusionButtonPress}>Press me if you're confused</Button>
                 </div>
                 {isTextVisible && <div className="response-text-container">
-                    <small class={textClass}>{buttonResponseText}</small>
+                    <small className={textClass}>{buttonResponseText}</small>
                 </div>}
                 <div>
                     <Button onClick={leaveLectureButtonPress}>Leave lecture</Button>

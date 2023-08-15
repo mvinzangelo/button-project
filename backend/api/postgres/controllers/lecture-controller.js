@@ -4,7 +4,8 @@ const Lecture = db.lectures;
 module.exports = {
     createLecture: function (lecture) {
         return Lecture.create({
-            professorId: lecture.professorId
+            professorId: lecture.professorId,
+            meetingUUID: lecture.meetingUUID
         })
             .then((data) => {
                 console.log(data.toJSON());

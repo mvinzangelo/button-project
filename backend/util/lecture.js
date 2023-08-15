@@ -19,13 +19,31 @@ class Lecture {
         for (let i = 0; i < this.lecturesState.length; i++) {
             if (this.lecturesState[i].info.id === lectureCode) {
                 this.lecturesState[i].students.push(student);
+                return 0;
             }
         }
+        return -1;
     }
     getTime(lectureCode) {
         for (let i = 0; i < this.lecturesState.length; i++) {
             if (this.lecturesState[i].info.id === lectureCode) {
                 return this.lecturesState[i].time.read();
+            }
+        }
+        return 0;
+    }
+    pauseTime(lectureCode) {
+        for (let i = 0; i < this.lecturesState.length; i++) {
+            if (this.lecturesState[i].info.id === lectureCode) {
+                return this.lecturesState[i].time.stop();
+            }
+        }
+        return 0;
+    }
+    resumeTime(lectureCode) {
+        for (let i = 0; i < this.lecturesState.length; i++) {
+            if (this.lecturesState[i].info.id === lectureCode) {
+                return this.lecturesState[i].time.start();
             }
         }
         return 0;
@@ -46,6 +64,15 @@ class Lecture {
         if (objWithIdIndex > -1) {
             return true;
         } else {
+            return false;
+        }
+    }
+    checkLectureUUID(meetingUUID) {
+        const objWithIdIndex = this.lecturesState.findIndex((obj) => obj.info.meetingUUID === meetingUUID);
+        if (objWithIdIndex > -1) {
+            return this.lecturesState[objWithIdIndex].info.id;
+        }
+        else {
             return false;
         }
     }
