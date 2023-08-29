@@ -25,16 +25,6 @@ const sortListByName = (curr, next) => {
 // Please visit the Zoom Apps developer docs for comprehensive list
 const apis = [
   {
-    name: 'setVirtualBackground',
-    options: {
-      fileUrl:
-        "https://images.unsplash.com/photo-1533743983669-94fa5c4338ec?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=983&q=80",
-    }
-  },
-  {
-    name: 'removeVirtualBackground'
-  },
-  {
     name: 'getSupportedJsApis'
   },
   {
@@ -74,9 +64,6 @@ const apis = [
     name: 'getMeetingJoinUrl'
   },
   {
-    name: 'listCameras'
-  },
-  {
     name: 'expandApp'
   },
   {
@@ -106,20 +93,6 @@ const apis = [
     options: { action: 'resume' }
   },
   {
-    buttonName: 'setVideoMirrorEffect (true)',
-    name: 'setVideoMirrorEffect',
-    options: {
-      mirrorMyVideo: true
-    }
-  },
-  {
-    buttonName: 'setVideoMirrorEffect (false)',
-    name: 'setVideoMirrorEffect',
-    options: {
-      mirrorMyVideo: false
-    }
-  },
-  {
     buttonName: 'shareApp (start)',
     name: 'shareApp',
     options: {
@@ -135,4 +108,4 @@ const apis = [
   },
 ].sort(sortListByName);
 
-module.exports = { apis, invokeZoomAppsSdk}
+module.exports = { apis, invokeZoomAppsSdk }
