@@ -29,19 +29,22 @@ export const StudentView = (props) => {
 
     useEffect(() => {
         setConnectionStatus('Looking for a room');
-        var data = {
-            "studentId": user.id,
-            "meetingUUID": meetingUUID,
+        // TODO: test if this still works with the user condition
+        if (user) {
+            var data = {
+                "studentId": user.id,
+                "meetingUUID": meetingUUID,
+            }
+            socket.emit('check_existing_lecture', data, (res) => {
+                if (res) {
+                    console.log("FOUND ROOM");
+                }
+                else {
+                    console.log("NO ROOM FOUND");
+                    setConnectionStatus('No room found, waiting for cloud recording to start');
+                }
+            })
         }
-        socket.emit('check_existing_lecture', data, (res) => {
-            if (res) {
-                console.log("FOUND ROOM");
-            }
-            else {
-                console.log("NO ROOM FOUND");
-                setConnectionStatus('No room found, waiting for cloud recording to start');
-            }
-        })
         socket.on('new_lecture_started', (data) => {
             if (user) {
                 // to match the schema of the "join_lecture" event
@@ -152,7 +155,7 @@ export const StudentView = (props) => {
     return (
         <div className="student-view-container">
             <Route path='/student/enter-code' exact>
-                {/* <Form>
+                <Form>
                     <Form.Group className="mb-3" controlId="fromRoomCode">
                         <Form.Label>Room code</Form.Label>
                         <Form.Control placeholder="Enter room code"
@@ -162,8 +165,8 @@ export const StudentView = (props) => {
                         />
                         <Button onClick={joinLectureButtonPress}>Join lecture</Button>
                     </Form.Group>
-                </Form> */}
-                <h2>{connectionStatus}</h2>
+                </Form>
+                {/* <h2>{connectionStatus}</h2> */}
             </Route>
             <Route path='/student/in-lecture' exact>
                 <div className="confusion-button-container">
