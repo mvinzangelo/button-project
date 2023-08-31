@@ -188,9 +188,17 @@ export const Authorization = (props) => {
       >
         {inGuestMode ? "promptAuthorize" : "Authorize"}
       </Button>}
-      <div>
+      {/* <div>
         <Button onClick={onLogInClicked} disabled={user === null}>Log In</Button>
+      </div> */}
+      <h2>Log in as a:</h2>
+      <div>
+        <Button onClick={() => history.push('/student/enter-code')} disabled={user === null}>Student</Button>
       </div>
+      <div>
+        <Button onClick={() => history.push('/professor/create-lecture')} disabled={user === null}>Professor</Button>
+      </div>
+
 
       {/* <div>
         <Header
