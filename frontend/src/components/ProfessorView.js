@@ -99,6 +99,11 @@ export const ProfessorView = (props) => {
         zoomSdk.onCloudRecording((data) => {
             handleCloudRecordingEvent(data.action);
         })
+        if (user) {
+            socket.emit('check_professor_id_present', user.id, (retLectureCode) => {
+                setLectureCode(retLectureCode);
+            })
+        }
     }, [user])
 
     function histogram(X, binRange, endTime) {
@@ -169,7 +174,8 @@ export const ProfessorView = (props) => {
         <div className="professor-view-container">
             <Route path='/professor/create-lecture'>
                 <div>
-                    <Button onClick={createNewLecturePress}>Start a new lecture</Button>
+                    {lectureCodeRef.current == '' && <Button onClick={createNewLecturePress}>Start a new lecture</Button>}
+                    {lectureCodeRef.current != '' && <Button onClick={() => history.push('/professor/in-lecture')}>Resume current lecture</Button>}
                     {/* <h2>Start a cloud recording</h2> */}
                 </div>
             </Route>

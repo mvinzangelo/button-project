@@ -7,7 +7,6 @@ class Lecture {
     constructor() {
         this.lecturesState = [];
     }
-    // TODO: Create function to pause the time
     addLecture(lecture) {
         this.lecturesState.push({
             info: lecture,
@@ -69,6 +68,15 @@ class Lecture {
     }
     checkLectureUUID(meetingUUID) {
         const objWithIdIndex = this.lecturesState.findIndex((obj) => obj.info.meetingUUID === meetingUUID);
+        if (objWithIdIndex > -1) {
+            return this.lecturesState[objWithIdIndex].info.id;
+        }
+        else {
+            return false;
+        }
+    }
+    checkIfProfessorOwnsLecture(professorId) {
+        const objWithIdIndex = this.lecturesState.findIndex((obj) => obj.info.professorId === professorId);
         if (objWithIdIndex > -1) {
             return this.lecturesState[objWithIdIndex].info.id;
         }
