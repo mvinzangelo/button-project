@@ -99,6 +99,11 @@ export const ProfessorView = (props) => {
         zoomSdk.onCloudRecording((data) => {
             handleCloudRecordingEvent(data.action);
         })
+        if (user) {
+            socket.emit('check_professor_id_present', user.id, (retLectureCode) => {
+                setLectureCode(retLectureCode);
+            })
+        }
     }, [user])
 
     function histogram(X, binRange, endTime) {
@@ -135,6 +140,7 @@ export const ProfessorView = (props) => {
         // TODO: add a check if they're already in a lecture
         console.log("=========Create new lecture button pressed=========");
         createNewLecture();
+        history.push('/professor/in-lecture');
     }
 
     function ButtonGraph() {
@@ -162,20 +168,22 @@ export const ProfessorView = (props) => {
     const endCurrentLecturePress = () => {
         // TODO: get this lecture code from the backend
         endCurrentLecture();
+        history.push('/professor/lecture-data');
     }
     return (
         <div className="professor-view-container">
             <Route path='/professor/create-lecture'>
                 <div>
-                    {/* <Button onClick={createNewLecturePress}>Start a new lecture</Button> */}
-                    <h2>Start a cloud recording</h2>
+                    {lectureCodeRef.current == '' && <Button onClick={createNewLecturePress}>Start a new lecture</Button>}
+                    {lectureCodeRef.current != '' && <Button onClick={() => history.push('/professor/in-lecture')}>Resume current lecture</Button>}
+                    {/* <h2>Start a cloud recording</h2> */}
                 </div>
             </Route>
             <Route path='/professor/in-lecture'>
                 <h2>Current lecture code: {lectureCodeRef.current ? lectureCodeRef.current : "n/a"}</h2>
                 <h2>Recording status: {recordingStatus}</h2>
                 <div>
-                    {/* <Button onClick={endCurrentLecturePress}>End current lecture</Button> */}
+                    <Button onClick={endCurrentLecturePress}>End current lecture</Button>
                 </div>
             </Route>
             <Route path='/professor/lecture-data'>

@@ -2,6 +2,7 @@
 import { useLocation, useHistory, Route, Redirect } from "react-router-dom";
 import { useCallback, useEffect, useState, useRef } from "react";
 import { apis } from "./apis";
+import Button from "react-bootstrap/Button";
 import { Authorization } from "./components/Authorization";
 import ApiScrollview from "./components/ApiScrollview";
 import { StudentView } from "./components/StudentView";
@@ -229,6 +230,9 @@ function App() {
         <Button>Set role "professor"</Button> */}
       </Route>
       <Route path="/professor">
+        <div>
+          <Button onClick={() => history.push('/authorize')} disabled={user === null}>Log out</Button>
+        </div>
         <h1>Professor</h1>
         <ProfessorView
           user={userRef.current}
@@ -239,6 +243,9 @@ function App() {
         />
       </Route>
       <Route path="/student">
+        <div>
+          <Button onClick={() => history.push('/authorize')} disabled={user === null}>Log out</Button>
+        </div>
         <h1>Student</h1>
         <StudentView
           user={userRef.current}

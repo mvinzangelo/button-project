@@ -1,5 +1,6 @@
 const lecture_controller = require('../controllers/lecture-controller');
 const button_prress_controller = require('../controllers/button-press-controller');
+const user_controller = require('../controllers/user-controller')
 const { button_presses } = require('../models');
 
 module.exports = (io, socket, lectures) => {
@@ -46,8 +47,20 @@ module.exports = (io, socket, lectures) => {
         // console.log("room: " + data + " | resume time: " + lectures.getTime(data));
     }
 
+    const onCheckProfessorIdPresent = (data, callback) => {
+        const lectureId = lectures.checkIfProfessorOwnsLecture(data);
+        if (lectureId) {
+            callback(lectureId);
+        }
+        else {
+            callback('');
+        }
+    }
+
     socket.on("create_new_lecture", onCreateNewLecture);
     socket.on("end_current_lecture", onEndCurrentLecture);
     socket.on("pause_current_lecture", onPauseCurrentLecture);
     socket.on("resume_current_lecture", onResumeCurrentLecture);
+    socket.on("resume_current_lecture", onResumeCurrentLecture);
+    socket.on("check_professor_id_present", onCheckProfessorIdPresent);
 }
