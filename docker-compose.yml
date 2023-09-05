@@ -1,6 +1,7 @@
 services:
   backend:
     build: ./backend/.
+    image: mvinzangelo/button-project-zoom-backend
     tty: true
     working_dir: /home/node/app
     command: ["npm", "run", "start:dev"]
@@ -32,6 +33,7 @@ services:
 
   frontend:
     build: ./frontend/.
+    image: mvinzangelo/button-project-zoom-frontend
     tty: true
     working_dir: /home/node/app
     command: "npm start"
