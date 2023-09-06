@@ -3,7 +3,7 @@
 require('./config')
 
 const db = require("./api/postgres/models")
-const http = require('http')
+const https = require('https')
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors');
@@ -11,6 +11,12 @@ const { Server } = require("socket.io");
 const Lecture = require("./util/lecture")
 
 const middleware = require('./middleware')
+
+// ssl certs
+const options = {
+  key: fs.readFileSync("/etc/ssl/private/private.key"),
+  cert: fs.readFileSync("/etc/ssl/private/certificate.crt")
+};
 
 // routers
 const zoomAppRouter = require('./api/zoomapp/router')
@@ -102,7 +108,7 @@ app.use((error, req, res) => {
 })
 
 // Start express server
-const server = http.createServer(app).listen(process.env.PORT, () => {
+const server = https.createServer(options, app).listen(process.env.PORT, () => {
   console.log('Zoom App is listening on port', process.env.PORT)
 });
 
