@@ -7,8 +7,8 @@ services:
     working_dir: /home/node/app
     command: ["npm", "run", "start:dev"]
     ports:
-      - "127.0.0.1:3000:3000"
-      - "127.0.0.1:9229:9229"
+      - "0.0.0.0:3000:3000"
+      - "0.0.0.0:9229:9229"
     env_file:
       - ${ENV_FILE:-.env}
     environment:
@@ -40,7 +40,7 @@ services:
     working_dir: /home/node/app
     command: "npm start"
     ports:
-      - "127.0.0.1:3001:9090"
+      - "0.0.0.0:3001:9090"
     environment:
       - PORT=9090
       - PUBLIC_URL=${PUBLIC_URL}/api/zoomapp/proxy
@@ -55,7 +55,7 @@ services:
   redis:
     image: redis:alpine
     ports:
-      - "127.0.0.1:6379:6379"
+      - "0.0.0.0:6379:6379"
     volumes:
       - ./data:/data
 
