@@ -3,7 +3,7 @@
 require('./config')
 
 const db = require("./api/postgres/models")
-const http = require('http')
+const https = require('https')
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors');
@@ -102,8 +102,15 @@ app.use((error, req, res) => {
   })
 })
 
+const fs = require('fs');
+// ssl certs
+const options = {
+  key: fs.readFileSync(process.env.SSL_KEY_PATH),
+  cert: fs.readFileSync(process.env.SSL_CERT_PATH)
+};
+
 // Start express server
-const server = http.createServer(app).listen(process.env.PORT, () => {
+const server = https.createServer(options, app).listen(process.env.PORT, () => {
   console.log('Zoom App is listening on port', process.env.PORT)
 });
 
