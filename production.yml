@@ -1,7 +1,8 @@
 services:
   backend:
-    build: ./backend/.
-    image: mvinzangelo/button-project-zoom-backend
+    build: 
+      context: ./backend/.
+      dockerfile: ./backend/Dockerfile.production
     tty: true
     working_dir: /home/node/app
     command: ["npm", "run", "start:dev"]
@@ -32,8 +33,9 @@ services:
       - postgres
 
   frontend:
-    build: ./frontend/.
-    image: mvinzangelo/button-project-zoom-frontend
+    build: 
+      context: ./frontend/.
+      dockerfile: ./frontend/Dockerfile.production
     tty: true
     working_dir: /home/node/app
     command: "npm start"
