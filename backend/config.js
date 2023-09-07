@@ -23,6 +23,8 @@ const envars = [
   'POSTGRES_PASSWORD',
   'POSTGRES_PORT',
   'VERIFICATION_TOKEN',
+  'SSL_KEY_PATH',
+  'SSL_CERT_PATH',
 ]
 
 envars.forEach((envar) => {

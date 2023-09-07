@@ -12,11 +12,6 @@ const Lecture = require("./util/lecture")
 
 const middleware = require('./middleware')
 
-// ssl certs
-const options = {
-  key: fs.readFileSync("/etc/ssl/private/private.key"),
-  cert: fs.readFileSync("/etc/ssl/private/certificate.crt")
-};
 
 // routers
 const zoomAppRouter = require('./api/zoomapp/router')
@@ -106,6 +101,13 @@ app.use((error, req, res) => {
     stack: error.stack,
   })
 })
+
+const fs = require('fs');
+// ssl certs
+const options = {
+  key: fs.readFileSync(process.env.SSL_KEY_PATH),
+  cert: fs.readFileSync(process.env.SSL_CERT_PATH)
+};
 
 // Start express server
 const server = https.createServer(options, app).listen(process.env.PORT, () => {
